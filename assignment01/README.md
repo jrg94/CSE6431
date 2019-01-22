@@ -16,6 +16,24 @@ points.
 > Implement a solution with writers’ priority to the readers/writers problem
 > using semaphores.
 
+```
+Procedure reader
+P(reader_mutex)
+if readers = 0 then     
+  readers = readers + 1
+  P(writer_mutex)
+else     
+  readers = readers + 1
+V(reader_mutex)
+
+<read file>
+
+P(reader_mutex)
+readers = readers - 1  
+if readers == 0 then V(writer_mutex)
+V(reader_mutex)
+```
+
 ## Problem 2
 
 > Implement a solution to the readers/writers problem using monitors which
