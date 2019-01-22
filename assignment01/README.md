@@ -15,3 +15,7 @@ points.
 > using semaphores.
 
 # Problem 2
+
+> Implement a solution to the readers/writers problem using monitors which
+> execute the requests in FCFS manner. If there are consecutive readers, they
+> should be able to access the file concurrently.
