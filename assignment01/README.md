@@ -4,6 +4,8 @@ February 5th, 2019
 
 CSE 5544
 
+Dr. Feng Qin
+
 # Assignment 01
 
 No solutions turned in after the end of the class that day will receive full
@@ -50,4 +52,4 @@ points.
 > Using Java support for multithreading (Synchronized, wait, and notifyall),  
 > write a solution to the readers-writers problem, with exclusive writer access,  
 > concurrent reader access, and reader’s priority. Submit your solution on paper
-> (i.e. do not worry about exact syntax or debugging).      
+> (i.e. do not worry about exact syntax or debugging).  
