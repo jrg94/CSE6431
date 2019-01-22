@@ -18,20 +18,29 @@ points.
 
 ```
 Procedure reader
-P(reader_mutex)
-if readers = 0 then     
-  readers = readers + 1
+  P(reader_mutex)
+  if readers = 0 then     
+    readers = readers + 1
+    P(writer_mutex)
+  else     
+    readers = readers + 1
+  V(reader_mutex)
+
+  <read file>
+
+  P(reader_mutex)
+  readers = readers - 1  
+  if readers == 0 then V(writer_mutex)
+  V(reader_mutex)
+
+Procedure writer
+  P(sr_mutex)
   P(writer_mutex)
-else     
-  readers = readers + 1
-V(reader_mutex)
 
-<read file>
+  <write file>
 
-P(reader_mutex)
-readers = readers - 1  
-if readers == 0 then V(writer_mutex)
-V(reader_mutex)
+  V(writer_mutex)
+  V(sr_mutex)
 ```
 
 ## Problem 2
