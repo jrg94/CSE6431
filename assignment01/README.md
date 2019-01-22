@@ -60,6 +60,12 @@ Procedure endRead
     readers = readers - 1;
     if (readers == 0) then writer.signal;
   end
+
+Procedure writer
+  begin
+    if (readers > 0) then writer.wait;
+    <write file>
+  end
 ```
 
 ## Problem 3
