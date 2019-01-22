@@ -49,6 +49,19 @@ Procedure writer
 > execute the requests in FCFS manner. If there are consecutive readers, they
 > should be able to access the file concurrently.
 
+```
+Procedure startRead
+  begin
+    readers = readers + 1;
+  end
+
+Procedure endRead
+  begin
+    readers = readers - 1;
+    if (readers == 0) then writer.signal;
+  end
+```
+
 ## Problem 3
 
 > Write a semaphore-based solution to the reader–writers problem that works as
