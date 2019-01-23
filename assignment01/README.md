@@ -102,6 +102,11 @@ Procedure writer
 > write a solution to the producer-consumer problem with a buffer of length N.  
 > Submit your solution on paper (i.e. do not worry about exact syntax or debugging).
 
+The following solution demonstrates just the shared memory portion of the
+producers/consumers problem. In addition to this class, you'd need to create
+producer and consumer classes which call the produce and consume methods
+in some way.
+
 ```java
 /**
  * A shared memory space class with functions for consumption and production.
