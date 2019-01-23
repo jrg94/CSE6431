@@ -1,3 +1,8 @@
+/**
+ * A shared memory space class with functions for consumption and production.
+ *
+ * @author Jeremy Grifski
+ */
 public class Buffer {
   private ArrayList<Integer> buffer;
   private maxSize;
@@ -23,6 +28,9 @@ public class Buffer {
     notifyAll();
   }
 
+  /**
+   * A consumption method which consumes the first value from the buffer.
+   */
   public synchronized int consume() {
     while(buffer.isEmpty()) {
       try {
