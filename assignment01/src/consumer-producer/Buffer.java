@@ -1,10 +1,10 @@
 public class Buffer {
   private ArrayList<Integer> buffer;
-  private boolean ready;
+  private maxSize;
 
-  public Buffer() {
+  public Buffer(int maxSize) {
     this.buffer = new ArrayList<Integer>();
-    this.ready = false;
+    this.maxSize = maxSize;
   }
 
   /**
@@ -12,7 +12,7 @@ public class Buffer {
    * and places it at the end of shared memory.
    */
   public synchronized void produce() {
-    while (ready) {
+    while (buffer.size() == maxSize) {
       try {
         wait();
       } catch (InterruptedException e) {
@@ -20,11 +20,19 @@ public class Buffer {
       }
     }
     this.buffer.add((int)(Math.random() * 1000));
-    this.ready = true;
     notifyAll();
   }
 
   public synchronized int consume() {
-    return 0;
+    while(buffer.isEmpty()) {
+      try {
+        wait();
+      } catch (InterruptedException e) {
+        System.out.println("Consumer awoken!");
+      }
+    }
+    int value = this.buffer.remove(0);
+    notifyAll();
+    return value;
   }
 }
