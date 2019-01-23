@@ -75,9 +75,15 @@ Procedure writer
 > readers and  writers. Otherwise, it processes them normally, i.e., readers
 > concurrently and writers serially.  
 
+```
+```
+
 ## Problem 4
 
 > Write a monitor-based solution to the above problem.
+
+```
+```
 
 ## Problem 5
 
@@ -87,11 +93,17 @@ Procedure writer
 > the processes concurrently accessing the file must be less than n. Write a
 > monitor to coordinate accesses to the file.
 
+```
+```
+
 ## Problem 6
 
 > Using Java support for multithreading (Synchronized, wait, and notifyall),  
 > write a solution to the producer-consumer problem with a buffer of length N.  
 > Submit your solution on paper (i.e. do not worry about exact syntax or debugging).
+
+```java
+```
 
 ## Problem 7
 
@@ -99,3 +111,6 @@ Procedure writer
 > write a solution to the readers-writers problem, with exclusive writer access,  
 > concurrent reader access, and reader’s priority. Submit your solution on paper
 > (i.e. do not worry about exact syntax or debugging).  
+
+```java
+```
