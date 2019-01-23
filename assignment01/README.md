@@ -156,6 +156,34 @@ public class Buffer {
 }
 ```
 
+As you can see, this solution leverages all that is asked via synchronized,
+wait, and notifyAll. The following code snippets are the class stubs for
+the producer and consumer classes:
+
+```java
+public class Producer extends Thread {
+  private Buffer sharedMemory;
+
+  public Producer(Buffer sharedMemory) {}
+
+  public void run() {
+    // Implement production loop
+  }
+}
+```
+
+```java
+public class Consumer extends Thread {
+  private Buffer sharedMemory;
+
+  public Consumer(Buffer sharedMemory) {}
+
+  public void run() {
+    // Implement consumption loop
+  }
+}
+```
+
 ## Problem 7
 
 > Using Java support for multithreading (Synchronized, wait, and notifyall),  
