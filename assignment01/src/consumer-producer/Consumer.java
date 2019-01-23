@@ -1,3 +1,3 @@
-public class Consumer {
-  
+public class Consumer extends thread {
+
 }
