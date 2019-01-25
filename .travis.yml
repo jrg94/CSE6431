@@ -1,10 +1,25 @@
-sudo: required
-dist: trusty
-language: r
+language: generic
+
+# Dependency of the minted package
+before_install:
+ - sudo apt-get install python-pygments
+ 
+install:
+ - source ./texlive/texlive_install.sh
+ 
+cache:
+  directories:
+    - /tmp/texlive
+    - $HOME/.texlive
+    
+# Change working directory so including files will work
+before_script: cd $TRAVIS_BUILD_DIR/
 
 script:
-  - mkdir _build
-  - pdflatex -interaction=nonstopmode -halt-on-error -output-directory _build assignment01/doc/assignment01.tex
+# texliveonfly will download packages automatically, running pdflatex by default. Change compiler with e.g. --compiler=lualatex
+- texliveonfly -shell-escape ./assignment01/doc/assignment01.tex
+# Compile twice to fix possible references
+- texliveonfly -shell-escape ./assignment01/doc/assignment01.tex
 
 notifications:
   email: false
