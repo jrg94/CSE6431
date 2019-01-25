@@ -146,12 +146,13 @@
 \pagebreak
 
 \begin{homeworkProblem}
+
     \textbf{
-      Implement a solution with writers’ priority to the readers/writers problem
-      using semaphores.
+        Implement a solution with writers’ priority to the readers/writers problem
+        using semaphores.
     }
 
-    \begin{minted}[gobble=8]{java}
+    \begin{minted}[gobble=8, linenos]{java}
         Procedure reader
           P(reader_mutex)
           if readers = 0 then
@@ -183,74 +184,32 @@
 \pagebreak
 
 \begin{homeworkProblem}
-    Let \(\Sigma = \{0, 1\}\). Construct a DFA \(A\) that recognizes the
-    language that consists of all binary numbers that can be divided by 5.
-    \\
 
-    Let the state \(q_k\) indicate the remainder of \(k\) divided by 5. For
-    example, the remainder of 2 would correlate to state \(q_2\) because \(7
-    \mod 5 = 2\).
+    \textbf{
+        Implement a solution to the readers/writers problem using monitors which
+        execute the requests in FCFS manner. If there are consecutive readers,
+        they should be able to access the file concurrently.
+    }
 
-    \begin{figure}[h]
-        \centering
-        \begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto]
-            \node[state, accepting, initial] (q_0)   {$q_0$};
-            \node[state] (q_1) [right=of q_0] {$q_1$};
-            \node[state] (q_2) [right=of q_1] {$q_2$};
-            \node[state] (q_3) [right=of q_2] {$q_3$};
-            \node[state] (q_4) [right=of q_3] {$q_4$};
-            \path[->]
-                (q_0)
-                    edge [loop above] node {0} (q_0)
-                    edge node {1} (q_1)
-                (q_1)
-                    edge node {0} (q_2)
-                    edge [bend right=-30] node {1} (q_3)
-                (q_2)
-                    edge [bend left] node {1} (q_0)
-                    edge [bend right=-30] node {0} (q_4)
-                (q_3)
-                    edge node {1} (q_2)
-                    edge [bend left] node {0} (q_1)
-                (q_4)
-                    edge node {0} (q_3)
-                    edge [loop below] node {1} (q_4);
-        \end{tikzpicture}
-        \caption{DFA, \(A\), this is really beautiful, ya know?}
-        \label{fig:multiple5}
-    \end{figure}
+    \begin{minted}[gobble=8, linenos]{java}
+        Procedure startRead
+          begin
+            readers = readers + 1;
+          end
 
-    \textbf{Justification}
-    \\
+        Procedure endRead
+          begin
+            readers = readers - 1;
+            if (readers == 0) then writer.signal;
+          end
 
-    Take a given binary number, \(x\). Since there are only two inputs to our
-    state machine, \(x\) can either become \(x0\) or \(x1\). When a 0 comes
-    into the state machine, it is the same as taking the binary number and
-    multiplying it by two. When a 1 comes into the machine, it is the same as
-    multipying by two and adding one.
-    \\
+        Procedure writer
+          begin
+            if (readers > 0) then writer.wait;
+            <write file>
+          end
+    \end{minted}
 
-    Using this knowledge, we can construct a transition table that tell us
-    where to go:
-
-    \begin{table}[ht]
-        \centering
-        \begin{tabular}{c || c | c | c | c | c}
-            & \(x \mod 5 = 0\)
-            & \(x \mod 5 = 1\)
-            & \(x \mod 5 = 2\)
-            & \(x \mod 5 = 3\)
-            & \(x \mod 5 = 4\)
-            \\
-            \hline
-            \(x0\) & 0 & 2 & 4 & 1 & 3 \\
-            \(x1\) & 1 & 3 & 0 & 2 & 4 \\
-        \end{tabular}
-    \end{table}
-
-    Therefore on state \(q_0\) or (\(x \mod 5 = 0\)), a transition line should
-    go to state \(q_0\) for the input 0 and a line should go to state \(q_1\)
-    for input 1. Continuing this gives us the Figure~\ref{fig:multiple5}.
 \end{homeworkProblem}
 
 \begin{homeworkProblem}
