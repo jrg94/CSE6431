@@ -38,8 +38,13 @@
 
 \setlength\parindent{0pt}
 
-\definecolor{light-gray}{rgb}{0.95,0.95,0.95}
-\setminted{bgcolor=light-gray}
+%
+% Minted Settings
+%
+
+\setminted{frame=lines}
+\setminted{linenos}
+\setminted{autogobble}
 
 %
 % Create Problem Sections
@@ -152,7 +157,7 @@
         using semaphores.
     }
 
-    \begin{minted}[gobble=8, linenos]{text}
+    \begin{minted}{text}
         Procedure reader
           P(reader_mutex)
           if readers = 0 then
@@ -191,7 +196,7 @@
         they should be able to access the file concurrently.
     }
 
-    \begin{minted}[gobble=8, linenos]{text}
+    \begin{minted}{text}
         Procedure startRead
           begin
             readers = readers + 1;
@@ -255,14 +260,14 @@
         Using Java support for multithreading (Synchronized, wait, and notifyall),
         write a solution to the producer-consumer problem with a buffer of length N.
         Submit your solution on paper (i.e. do not worry about exact syntax or debugging).
-    }
+    }\\
 
     The following solution demonstrates just the shared memory portion of the
     producers/consumers problem. In addition to this class, you'd need to create
     producer and consumer classes which call the produce and consume methods
     in some way.
 
-    \begin{minted}[gobble=8, linenos]{java}
+    \begin{minted}{java}
         /**
          * A shared memory space class with functions for consumption and production.
          *
@@ -315,7 +320,7 @@
     wait, and notifyAll. The following code snippets are the class stubs for
     the producer and consumer classes:
 
-    \begin{minted}[gobble=8, linenos]{java}
+    \begin{minted}{java}
         public class Producer extends Thread {
           private Buffer sharedMemory;
 
@@ -327,7 +332,7 @@
         }
     \end{minted}
 
-    \begin{minted}[gobble=8, linenos]{java}
+    \begin{minted}{java}
         public class Consumer extends Thread {
           private Buffer sharedMemory;
 
@@ -347,7 +352,7 @@
         Using Java support for multithreading (Synchronized, wait, and notifyall),
         write a solution to the readers-writers problem, with exclusive writer access,
         concurrent reader access, and reader’s priority. Submit your solution on paper
-        (i.e. do not worry about exact syntax or debugging). 
+        (i.e. do not worry about exact syntax or debugging).
     }
 
 \end{homeworkProblem}
