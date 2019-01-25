@@ -8,7 +8,8 @@
 \usepackage{tikz}
 \usepackage[plain]{algorithm}
 \usepackage{algpseudocode}
-\usepackage{listings}
+\usepackage{minted}
+\usepackage{color}
 
 \usetikzlibrary{automata,positioning}
 
@@ -36,6 +37,9 @@
 \renewcommand\footrulewidth{0.4pt}
 
 \setlength\parindent{0pt}
+
+\definecolor{light-gray}{rgb}{0.95,0.95,0.95}
+\setminted{bgcolor=light-gray}
 
 %
 % Create Problem Sections
@@ -142,10 +146,12 @@
 \pagebreak
 
 \begin{homeworkProblem}
-    Implement a solution with writers’ priority to the readers/writers problem
-    using semaphores.
+    \textbf{
+      Implement a solution with writers’ priority to the readers/writers problem
+      using semaphores.
+    }
 
-    \begin{lstlisting}[gobble=8]
+    \begin{minted}[gobble=8]{java}
         Procedure reader
           P(reader_mutex)
           if readers = 0 then
@@ -170,7 +176,7 @@
 
           V(writer_mutex)
           V(sr_mutex)
-    \end{lstlisting}
+    \end{minted}
 
 \end{homeworkProblem}
 

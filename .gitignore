@@ -5,3 +5,5 @@
 *.log
 *.gz
 *.pdf
+
+_minted*/
