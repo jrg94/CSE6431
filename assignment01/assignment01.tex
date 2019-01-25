@@ -236,69 +236,120 @@
 \pagebreak
 
 \begin{homeworkProblem}
-    Prove a polynomial of degree \(k\), \(a_kn^k + a_{k - 1}n^{k - 1} + \hdots
-    + a_1n^1 + a_0n^0\) is a member of \(\Theta(n^k)\) where \(a_k \hdots a_0\)
-    are nonnegative constants.
 
-    \begin{proof}
-        To prove that \(a_kn^k + a_{k - 1}n^{k - 1} + \hdots + a_1n^1 +
-        a_0n^0\), we must show the following:
+    \textbf{
+        A file is to be shared among different processes, each of which has a unique
+        number. The file can be accessed simultaneously by several processes, subject
+        to the following constraint: The sum of all unique numbers associated with all
+        the processes concurrently accessing the file must be less than n. Write a
+        monitor to coordinate accesses to the file.
+    }
 
-        \[
-            \exists c_1 \exists c_2 \forall n \geq n_0,\ {c_1 \cdot g(n) \leq
-            f(n) \leq c_2 \cdot g(n)}
-        \]
-
-        For the first inequality, it is easy to see that it holds because no
-        matter what the constants are, \(n^k \leq a_kn^k + a_{k - 1}n^{k - 1} +
-        \hdots + a_1n^1 + a_0n^0\) even if \(c_1 = 1\) and \(n_0 = 1\).  This
-        is because \(n^k \leq c_1 \cdot a_kn^k\) for any nonnegative constant,
-        \(c_1\) and \(a_k\).
-        \\
-
-        Taking the second inequality, we prove it in the following way.
-        By summation, \(\sum\limits_{i=0}^k a_i\) will give us a new constant,
-        \(A\). By taking this value of \(A\), we can then do the following:
-
-        \[
-            \begin{split}
-                a_kn^k + a_{k - 1}n^{k - 1} + \hdots + a_1n^1 + a_0n^0 &=
-                \\
-                &\leq (a_k + a_{k - 1} \hdots a_1 + a_0) \cdot n^k
-                \\
-                &= A \cdot n^k
-                \\
-                &\leq c_2 \cdot n^k
-            \end{split}
-        \]
-
-        where \(n_0 = 1\) and \(c_2 = A\). \(c_2\) is just a constant. Thus the
-        proof is complete.
-    \end{proof}
 \end{homeworkProblem}
 
 \pagebreak
 
-%
-% Non sequential homework problems
-%
-
-% Jump to problem 18
-\begin{homeworkProblem}[18]
-    Evaluate \(\sum_{k=1}^{5} k^2\) and \(\sum_{k=1}^{5} (k - 1)^2\).
-\end{homeworkProblem}
-
-% Continue counting to 19
 \begin{homeworkProblem}
-    Find the derivative of \(f(x) = x^4 + 3x^2 - 2\)
+
+    \textbf{
+        Using Java support for multithreading (Synchronized, wait, and notifyall),
+        write a solution to the producer-consumer problem with a buffer of length N.
+        Submit your solution on paper (i.e. do not worry about exact syntax or debugging).
+    }
+
+    The following solution demonstrates just the shared memory portion of the
+    producers/consumers problem. In addition to this class, you'd need to create
+    producer and consumer classes which call the produce and consume methods
+    in some way.
+
+    \begin{minted}[gobble=8, linenos]{java}
+        /**
+         * A shared memory space class with functions for consumption and production.
+         *
+         * @author Jeremy Grifski
+         */
+        public class Buffer {
+          private ArrayList<Integer> buffer;
+          private maxSize;
+
+          public Buffer(int maxSize) {
+            this.buffer = new ArrayList<Integer>();
+            this.maxSize = maxSize;
+          }
+
+          /**
+           * A production method which generates a random value between 0 and 1000
+           * and places it at the end of shared memory.
+           */
+          public synchronized void produce() {
+            while (buffer.size() == maxSize) {
+              try {
+                wait();
+              } catch (InterruptedException e) {
+                System.out.println("Producer awoken!");
+              }
+            }
+            this.buffer.add((int)(Math.random() * 1000));
+            notifyAll();
+          }
+
+          /**
+           * A consumption method which consumes the first value from the buffer.
+           */
+          public synchronized int consume() {
+            while(buffer.isEmpty()) {
+              try {
+                wait();
+              } catch (InterruptedException e) {
+                System.out.println("Consumer awoken!");
+              }
+            }
+            int value = this.buffer.remove(0);
+            notifyAll();
+            return value;
+          }
+        }
+    \end{minted}
+
+    As you can see, this solution leverages all that is asked via synchronized,
+    wait, and notifyAll. The following code snippets are the class stubs for
+    the producer and consumer classes:
+
+    \begin{minted}[gobble=8, linenos]{java}
+        public class Producer extends Thread {
+          private Buffer sharedMemory;
+
+          public Producer(Buffer sharedMemory) {}
+
+          public void run() {
+            // Implement production loop
+          }
+        }
+    \end{minted}
+
+    \begin{minted}[gobble=8, linenos]{java}
+        public class Consumer extends Thread {
+          private Buffer sharedMemory;
+
+          public Consumer(Buffer sharedMemory) {}
+
+          public void run() {
+            // Implement consumption loop
+          }
+        }
+    \end{minted}
+
 \end{homeworkProblem}
 
-% Go back to where we left off
-\begin{homeworkProblem}[6]
-    Evaluate the integrals
-    \(\int_0^1 (1 - x^2) \dx\)
-    and
-    \(\int_1^{\infty} \frac{1}{x^2} \dx\).
+\begin{homeworkProblem}
+
+    \textbf{
+        Using Java support for multithreading (Synchronized, wait, and notifyall),
+        write a solution to the readers-writers problem, with exclusive writer access,
+        concurrent reader access, and reader’s priority. Submit your solution on paper
+        (i.e. do not worry about exact syntax or debugging). 
+    }
+
 \end{homeworkProblem}
 
 \end{document}
