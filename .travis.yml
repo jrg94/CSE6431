@@ -1,25 +1,15 @@
-language: generic
+language: r
+sudo: true
+latex: false
+pandoc: false
+warnings_are_errors: false
 
-# Dependency of the minted package
-before_install:
- - sudo apt-get install python-pygments
- 
-install:
- - source ./texlive/texlive_install.sh
- 
-cache:
-  directories:
-    - /tmp/texlive
-    - $HOME/.texlive
-    
-# Change working directory so including files will work
-before_script: cd $TRAVIS_BUILD_DIR/
-
+install: echo "The install step is required but does nothing now."
 script:
-# texliveonfly will download packages automatically, running pdflatex by default. Change compiler with e.g. --compiler=lualatex
-- texliveonfly -shell-escape ./assignment01/doc/assignment01.tex
-# Compile twice to fix possible references
-- texliveonfly -shell-escape ./assignment01/doc/assignment01.tex
+- Rscript install_texlive.R
+- Rscript -e 'tinytex::pdflatex("assignment01/doc/assignment01.tex", bib_engine = "biber")'
+
+cache: packages
 
 notifications:
   email: false
