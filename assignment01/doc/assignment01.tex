@@ -225,6 +225,33 @@
         readers and  writers. Otherwise, it processes them normally, i.e., readers
         concurrently and writers serially.
     }
+    
+    \begin{minted}{text}
+        Procedure reader
+          P(reader_mutex)
+          if readers = 0 then
+            readers = readers + 1
+            P(writer_mutex)
+          else
+            readers = readers + 1
+          V(reader_mutex)
+
+          <read file>
+
+          P(reader_mutex)
+          readers = readers - 1
+          if readers == 0 then V(writer_mutex)
+          V(reader_mutex)
+
+        Procedure writer
+          P(sr_mutex)
+          P(writer_mutex)
+
+          <write file>
+
+          V(writer_mutex)
+          V(sr_mutex)
+    \end{minted}
 
 \end{homeworkProblem}
 
@@ -235,6 +262,25 @@
     \textbf{
         Write a monitor-based solution to the above problem.
     }
+    
+    \begin{minted}{text}
+        Procedure startRead
+          begin
+            readers = readers + 1;
+          end
+
+        Procedure endRead
+          begin
+            readers = readers - 1;
+            if (readers == 0) then writer.signal;
+          end
+
+        Procedure writer
+          begin
+            if (readers > 0) then writer.wait;
+            <write file>
+          end
+    \end{minted}
 
 \end{homeworkProblem}
 
