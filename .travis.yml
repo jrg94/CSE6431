@@ -17,9 +17,9 @@ before_script: cd $TRAVIS_BUILD_DIR/assignment01/doc/
 
 script:
   # texliveonfly will download packages automatically, running pdflatex by default. Change compiler with e.g. --compiler=lualatex
-  - texliveonfly --shell-escape ./assignment01.tex
+  - texliveonfly -shell-escape ./assignment01.tex
   # Compile twice to fix possible references
-  - texliveonfly --shell-escape ./assignment01.tex
+  - texliveonfly -shell-escape ./assignment01.tex
 
 notifications:
   email: false
