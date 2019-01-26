@@ -2,6 +2,7 @@ language: r
 
 # Dependency of the minted package
 before_install:
+  - sudo apt-get update
   - sudo apt-get install latexmk
   - sudo apt-get install texlive-latex-extra
   - sudo apt-get install python-pygments
