@@ -10,7 +10,7 @@ before_install:
 before_script: cd $TRAVIS_BUILD_DIR/assignment01/doc/
 
 script:
-  - latexmk -pdf -shell-escape
+  - latexmk -pdf -shell-escape -interaction=nonstopmode
 
 deploy:
   provider: releases
