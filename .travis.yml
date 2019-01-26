@@ -20,5 +20,16 @@ script:
   - pdflatex -interaction=nonstopmode -shell-escape -halt-on-error -output-directory _build ./assignment01.tex
   - pdflatex -interaction=nonstopmode -shell-escape -halt-on-error -output-directory _build ./assignment01.tex
 
+deploy:
+  provider: releases
+  api_key:
+    secure: ${GITHUB_TOKEN}
+  file:
+    - ./_build/assignment01.pdf
+  skip_cleanup: true
+  on:
+    tags: true
+    branch: master
+
 notifications:
   email: false
