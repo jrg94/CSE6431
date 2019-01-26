@@ -403,7 +403,80 @@
         write a solution to the readers-writers problem, with exclusive writer access,
         concurrent reader access, and reader’s priority. Submit your solution on paper
         (i.e. do not worry about exact syntax or debugging).
-    }
+    }\\
+
+    In this solution, I tried to model everything after the existing readers and
+    writers solution using monitors. Instead of using a busy flag, I used a
+    writers count which serves the exact same purpose. Since there are no queues
+    to control directly, I notify all every time a process finishes and let the
+    start loops sort everything out.
+
+    \begin{minted}{java}
+        /**
+         * A shared file with functionality for reading and writing.
+         *
+         * @author Jeremy Grifski
+         */
+        public class SharedFile {
+
+          private int readCount;
+          private int writeCount;
+
+          public SharedFile() {
+            this.readCount = 0;
+            this.writeCount = 0;
+          }
+
+          /**
+           * A start read method which kicks off reading iff there are no writers.
+           */
+          public synchronized void startRead() {
+            while (writeCount > 0) {
+              try {
+                wait();
+              } catch (InterruptedException e) {
+                System.out.println("Reader wants to read!");
+              }
+            }
+            readCount++;
+            notifyAll();
+          }
+
+          /**
+           * An end read method which notifies everyone when there are no readers left.
+           */
+          public synchronized void endRead() {
+            readCount--;
+            if (this.readCount == 0) {
+              notifyAll();
+            }
+          }
+
+          /**
+           * A start write method which kicks off writing if there are no other readers
+           * or writers.
+           */
+          public synchronized void startWrite() {
+            while (readCount > 0 || writeCount > 0) {
+              try {
+                wait();
+              } catch (InterruptedException e) {
+                System.out.println("Writer wants to write!")
+              }
+            }
+            writeCount++;
+          }
+
+          /**
+           * An end write method whichs notifies everyone when writing is done.
+           */
+          public synchronized void endWrite() {
+            writeCount--;
+            notifyAll();
+          }
+
+        }
+    \end{minted}
 
 \end{homeworkProblem}
 
