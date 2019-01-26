@@ -10,14 +10,14 @@ before_script: cd $TRAVIS_BUILD_DIR/assignment01/doc/
 
 script:
   - mkdir _build
-  - pdflatex -interaction=nonstopmode -shell-escape -halt-on-error -output-directory _build ./assignment01.tex
+  - pdflatex -interaction=nonstopmode -shell-escape -halt-on-error ./assignment01.tex
 
 deploy:
   provider: releases
   api_key:
     secure: ${GITHUB_TOKEN}
   file:
-    - ./_build/assignment01.pdf
+    - ./assignment01.pdf
   skip_cleanup: true
   on:
     tags: true
