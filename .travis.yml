@@ -3,9 +3,13 @@ language: generic
 # Dependency of the minted package
 before_install:
  - sudo apt-get install python-pygments
- 
+
 install:
- - source ./texlive/texlive_install.sh
+  - mkdir ./texlive/
+  - 4-texlive
+  - 4-texlive
+  - 4-texlive
+  - source ./texlive/texlive_install.sh
 
 cache:
   directories:
