@@ -1,0 +1,9 @@
+
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.gz
+*.pdf
+
+_minted*/
