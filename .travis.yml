@@ -2,7 +2,7 @@ language: generic
 
 # Dependency of the minted package
 before_install:
-  - suod apt-get install latexmk
+  - sudo apt-get install latexmk
   - sudo apt-get install texlive-latex-extra
   - sudo apt-get install python-pygments
 
