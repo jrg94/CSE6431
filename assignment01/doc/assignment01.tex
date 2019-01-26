@@ -188,9 +188,21 @@
             writers_waiting--
             writers_writing++
           V(sr_mutex)
+    \end{minted}
 
+    Meanwhile, the writing process is just as complicated.
+
+    \begin{minted}{text}
         Procedure writer
           P(sr_mutex)
+          if writers_writing > 0 or readers_reading > 0 then
+            writers_waiting++
+          else
+            V(writer_mutex)
+            writers_writing++
+          V(sr_mutex)
+
+
           P(writer_mutex)
 
           <write file>
