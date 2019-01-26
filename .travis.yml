@@ -2,6 +2,7 @@ language: generic
 
 # Dependency of the minted package
 before_install:
+  - sudo apt-get install python-pygments
 
 install:
   - source ./texlive/texlive_install.sh
@@ -10,7 +11,6 @@ cache:
   directories:
     - /tmp/texlive
     - $HOME/.texlive
-  - sudo apt-get install python-pygments
 
 # Change working directory so including files will work
 before_script: cd $TRAVIS_BUILD_DIR/assignment01/doc/
