@@ -5,7 +5,6 @@
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{amsfonts}
-\usepackage[plain]{algorithm}
 \usepackage{algpseudocode}
 \usepackage{minted}
 \usepackage{color}
@@ -222,7 +221,7 @@
         readers and  writers. Otherwise, it processes them normally, i.e., readers
         concurrently and writers serially.
     }
-    
+
     \begin{minted}{text}
         Procedure reader
           P(reader_mutex)
@@ -259,7 +258,7 @@
     \textbf{
         Write a monitor-based solution to the above problem.
     }
-    
+
     \begin{minted}{text}
         Procedure startRead
           begin
