@@ -17,8 +17,8 @@ before_script: cd $TRAVIS_BUILD_DIR/assignment01/doc/
 
 script:
   - mkdir _build
-  - pdflatex -interaction=nonstopmode -shell-escape -halt-on-error -output-directory _build ./main.tex
-  - pdflatex -interaction=nonstopmode -shell-escape -halt-on-error -output-directory _build ./main.tex
+  - pdflatex -interaction=nonstopmode -shell-escape -halt-on-error -output-directory _build ./assignment01.tex
+  - pdflatex -interaction=nonstopmode -shell-escape -halt-on-error -output-directory _build ./assignment01.tex
 
 notifications:
   email: false
