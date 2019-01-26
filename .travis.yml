@@ -11,10 +11,8 @@ cache:
     - $HOME/.texlive
 
 script:
-  - mkdir _build
-  - travis_wait 3 pdflatex -shell-escape -output-directory _build ./assignment01/doc/assignment01.tex
-  - travis_wait 3 pdflatex -shell-escape -output-directory _build ./assignment01/doc/assignment01.tex
-  - cat _build/assignment01.log
+  - texliveonfly -shell-escape ./assignment01/doc/assignment01.tex
+  - texliveonfly -shell-escape ./assignment01/doc/assignment01.tex
 
 notifications:
   email: false
