@@ -5,11 +5,7 @@ before_install:
  - sudo apt-get install python-pygments
 
 install:
-  - mkdir ./texlive/
-  - 4-texlive
-  - 4-texlive
-  - 4-texlive
-  - source ./texlive/texlive_install.sh
+ - source ./texlive/texlive_install.sh
 
 cache:
   directories:
@@ -20,10 +16,9 @@ cache:
 before_script: cd $TRAVIS_BUILD_DIR/assignment01/doc/
 
 script:
-  # texliveonfly will download packages automatically, running pdflatex by default. Change compiler with e.g. --compiler=lualatex
-  - texliveonfly -shell-escape ./assignment01.tex
-  # Compile twice to fix possible references
-  - texliveonfly -shell-escape ./assignment01.tex
+  - mkdir _build
+  - pdflatex -interaction=nonstopmode -shell-escape -halt-on-error -output-directory _build ./main.tex
+  - pdflatex -interaction=nonstopmode -shell-escape -halt-on-error -output-directory _build ./main.tex
 
 notifications:
   email: false
