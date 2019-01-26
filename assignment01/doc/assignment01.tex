@@ -149,6 +149,25 @@
         using semaphores.
     }
 
+    Alright, this problem is going to need a bit of explaining because this
+    solution is very complicated. To start, we have the reader procedure
+    which is split into two parts leveraging three mutexes and four variables.
+    The four variables are readers_waiting, readers_reading, writers_writing,
+    and writers_waiting.
+
+    To get into the procedure, the process needs to aquire the sr_mutex. After
+    that, the reader assesses its ability to read which is based on writers
+    due to the writers priority. If it's safe to read, the process increments
+    the readers_reading variable and frees the reader_mutex. Otherwise, the process
+    increments the readers_waiting variable. In either case, the process frees
+    the sr_mutex before asking for the reader_mutex.
+
+    Once the process aquires the reader_mutex, it reads before attempting
+    to acquire the sr_mutex. If successful, the process decrements the
+    readers_reading variable and attempts to give control to writers as long
+    as their are writings waiting and there are no active readers. Finally,
+    the process gives up the sr_mutex.
+
     \begin{minted}{text}
         Procedure reader
           P(sr_mutex)
@@ -164,7 +183,7 @@
 
           P(sr_mutex)
           readers_reading--
-          if readers_waiting = 0 and writers_waiting > 0 then
+          if readers_reading = 0 and writers_waiting > 0 then
             V(writer_mutex)
             writers_waiting--
             writers_writing++
