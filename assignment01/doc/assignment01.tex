@@ -152,21 +152,21 @@
     Alright, this problem is going to need a bit of explaining because this
     solution is very complicated. To start, we have the reader procedure
     which is split into two parts leveraging three mutexes and four variables.
-    The four variables are readers_waiting, readers_reading, writers_writing,
-    and writers_waiting.
+    The four variables are readers\_waiting, readers\_reading, writers\_writing,
+    and writers\_waiting.
 
-    To get into the procedure, the process needs to aquire the sr_mutex. After
+    To get into the procedure, the process needs to aquire the sr\_mutex. After
     that, the reader assesses its ability to read which is based on writers
     due to the writers priority. If it's safe to read, the process increments
-    the readers_reading variable and frees the reader_mutex. Otherwise, the process
-    increments the readers_waiting variable. In either case, the process frees
-    the sr_mutex before asking for the reader_mutex.
+    the readers\_reading variable and frees the reader\_mutex. Otherwise, the process
+    increments the readers\_waiting variable. In either case, the process frees
+    the sr\_mutex before asking for the reader\_mutex.
 
-    Once the process aquires the reader_mutex, it reads before attempting
-    to acquire the sr_mutex. If successful, the process decrements the
-    readers_reading variable and attempts to give control to writers as long
+    Once the process aquires the reader\_mutex, it reads before attempting
+    to acquire the sr\_mutex. If successful, the process decrements the
+    readers\_reading variable and attempts to give control to writers as long
     as their are writings waiting and there are no active readers. Finally,
-    the process gives up the sr_mutex.
+    the process gives up the sr\_mutex.
 
     \begin{minted}{text}
         Procedure reader
@@ -191,20 +191,20 @@
     \end{minted}
 
     Meanwhile, the writing process is just as complicated. To start, the process
-    attempts to acquire the sr_mutex. If successful, it verifies that there
+    attempts to acquire the sr\_mutex. If successful, it verifies that there
     aren't any writers writing or readers reading. If there are, the process
-    increments the writers_waiting variable. Otherwise, the process gives the
-    go ahead for writing and increments the writers_writing variable.
+    increments the writers\_waiting variable. Otherwise, the process gives the
+    go ahead for writing and increments the writers\_writing variable.
 
-    At that point, the process gives up the sr_mutex and attempts to acquire
-    the writer_mutex to begin writing. If successful, the process begins
-    writing before attempting to acquire the sr_mutex once again.
+    At that point, the process gives up the sr\_mutex and attempts to acquire
+    the writer\_mutex to begin writing. If successful, the process begins
+    writing before attempting to acquire the sr\_mutex once again.
 
     With writing out of the way, the process decrements the number of writers
     writing before testing to see if there are any writers waiting. If so,
     the process signals the next writer. Otherwise, the process checks for
     waiting readers. If there are any, the process passes control over
-    to the next reader before freeing the sr_mutex.
+    to the next reader before freeing the sr\_mutex.
 
     \begin{minted}{text}
         Procedure writer
