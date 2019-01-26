@@ -15,3 +15,5 @@ collection-fontsrecommended
 minted
 oberdiek
 etoolbox
+float
+booktabs
