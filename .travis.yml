@@ -1,4 +1,4 @@
-language: r
+language: generic
 
 # Dependency of the minted package
 before_install:
@@ -9,7 +9,7 @@ before_install:
 before_script: cd $TRAVIS_BUILD_DIR/assignment01/doc/
 
 script:
-  - pdflatex -interaction=nonstopmode -shell-escape -halt-on-error ./assignment01.tex
+  - latexmk -pdf -shell-escape
 
 deploy:
   provider: releases
