@@ -2,6 +2,7 @@ language: generic
 
 # Dependency of the minted package
 before_install:
+  - sudo apt-get install miktex
   - sudo apt-get install texlive-latex-extra
   - sudo apt-get install python-pygments
 
