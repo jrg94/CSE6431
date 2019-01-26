@@ -184,11 +184,11 @@
         Implement a solution to the readers/writers problem using monitors which
         execute the requests in FCFS manner. If there are consecutive readers,
         they should be able to access the file concurrently.
-    }//
+    }\\
 
     In this solution, we track two variables: the numbers or readers and the
-    number of writers. In addition, we also use a shared queue, so that call
-    jobs are queued in FCFS order. Readers can only read if there are no writers
+    number of writers. In addition, we also use a shared queue, so that all
+    jobs are queued in FCFS order. Readers can only read if there are no writers,
     and writers can only writer if there are no readers. However, readers can
     read concurrently as their function is split into two.
 
@@ -216,6 +216,8 @@
     \end{minted}
 
 \end{homeworkProblem}
+
+\pagebreak
 
 \begin{homeworkProblem}
 
@@ -391,6 +393,8 @@
     \end{minted}
 
 \end{homeworkProblem}
+
+\pagebreak
 
 \begin{homeworkProblem}
 
