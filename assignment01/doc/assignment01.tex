@@ -198,7 +198,13 @@
 
     At that point, the process gives up the sr_mutex and attempts to acquire
     the writer_mutex to begin writing. If successful, the process begins
-    writing.
+    writing before attempting to acquire the sr_mutex once again.
+
+    With writing out of the way, the process decrements the number of writers
+    writing before testing to see if there are any writers waiting. If so,
+    the process signals the next writer. Otherwise, the process checks for
+    waiting readers. If there are any, the process passes control over
+    to the next reader before freeing the sr_mutex.
 
     \begin{minted}{text}
         Procedure writer
@@ -219,7 +225,7 @@
             V(writer_mutex)
             writers_writing++
             writers_waiting--
-          else
+          else if readers_waiting > 0 then
             V(reader_mutex)
             readers_reading++
             readers_waiting--
