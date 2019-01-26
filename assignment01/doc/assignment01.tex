@@ -151,20 +151,24 @@
 
     \begin{minted}{text}
         Procedure reader
-          P(reader_mutex)
-          if readers = 0 then
-            readers = readers + 1
-            P(writer_mutex)
+          P(sr_mutex)
+          if writers_writing > 0 or writers_waiting > 0 then
+            readers_waiting++
           else
-            readers = readers + 1
-          V(reader_mutex)
+            V(reader_mutex)
+            readers_reading++
+          V(sr_mutex)
 
+          P(reader_mutex)
           <read file>
 
-          P(reader_mutex)
-          readers = readers - 1
-          if readers == 0 then V(writer_mutex)
-          V(reader_mutex)
+          P(sr_mutex)
+          readers_reading--
+          if readers_waiting = 0 and writers_waiting > 0 then
+            V(writer_mutex)
+            writers_waiting--
+            writers_writing++
+          V(sr_mutex)
 
         Procedure writer
           P(sr_mutex)
