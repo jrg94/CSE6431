@@ -411,6 +411,10 @@
     to control directly, I notify all every time a process finishes and let the
     start loops sort everything out.
 
+    Once again, you'll notice that I don't provide the Reader and Writer clases
+    as they're more or less not important. The main shared resource logic
+    is here in the SharedFile class.
+
     \begin{minted}{java}
         /**
          * A shared file with functionality for reading and writing.
