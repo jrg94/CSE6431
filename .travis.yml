@@ -5,20 +5,11 @@ before_install:
   - sudo apt-get install texlive-latex-extra
   - sudo apt-get install python-pygments
 
-install:
-  - source ./texlive/texlive_install.sh
-
-cache:
-  directories:
-    - /tmp/texlive
-    - $HOME/.texlive
-
 # Change working directory so including files will work
 before_script: cd $TRAVIS_BUILD_DIR/assignment01/doc/
 
 script:
   - mkdir _build
-  - pdflatex -interaction=nonstopmode -shell-escape -halt-on-error -output-directory _build ./assignment01.tex
   - pdflatex -interaction=nonstopmode -shell-escape -halt-on-error -output-directory _build ./assignment01.tex
 
 deploy:
