@@ -18,7 +18,7 @@ before_script: cd $TRAVIS_BUILD_DIR/assignment01/doc/
 script:
   - mkdir _build
   # Prefix command with travis_wait x so it times out after 3 mins
-  - travis_wait 3 pdflatex -output-directory _build ./assignment01.tex
+  - travis_wait 3 pdflatex -shell-escape -output-directory _build ./assignment01.tex
 
 notifications:
   email: false
