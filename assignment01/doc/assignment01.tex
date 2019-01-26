@@ -190,7 +190,15 @@
           V(sr_mutex)
     \end{minted}
 
-    Meanwhile, the writing process is just as complicated.
+    Meanwhile, the writing process is just as complicated. To start, the process
+    attempts to acquire the sr_mutex. If successful, it verifies that there
+    aren't any writers writing or readers reading. If there are, the process
+    increments the writers_waiting variable. Otherwise, the process gives the
+    go ahead for writing and increments the writers_writing variable.
+
+    At that point, the process gives up the sr_mutex and attempts to acquire
+    the writer_mutex to begin writing. If successful, the process begins
+    writing.
 
     \begin{minted}{text}
         Procedure writer
@@ -202,12 +210,19 @@
             writers_writing++
           V(sr_mutex)
 
-
           P(writer_mutex)
-
           <write file>
 
-          V(writer_mutex)
+          P(sr_mutex)
+          writers_writing--
+          if writers_waiting > 0 then
+            V(writer_mutex)
+            writers_writing++
+            writers_waiting--
+          else
+            V(reader_mutex)
+            readers_reading++
+            readers_waiting--
           V(sr_mutex)
     \end{minted}
 
