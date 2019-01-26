@@ -1,15 +1,15 @@
 public class SharedFile {
 
-  private boolean busy;
   private int readCount;
+  private int writeCount;
 
   public SharedFile() {
-    this.busy = false;
     this.readCount = 0;
+    this.writeCount = 0;
   }
 
   public synchronized void startRead() {
-    while (busy) {
+    while (writeCount > 0) {
       try {
         wait();
       } catch (InterruptedException e) {
@@ -21,15 +21,26 @@ public class SharedFile {
   }
 
   public synchronized void endRead() {
-
+    readCount--;
+    if (this.readCount == 0) {
+      notifyAll();
+    }
   }
 
   public synchronized void startWrite() {
-
+    while (readCount > 0 || writeCount > 0) {
+      try {
+        wait();
+      } catch (InterruptedException e) {
+        System.out.println("Writer wants to write!")
+      }
+    }
+    writeCount++;
   }
 
   public synchronized void endWrite() {
-
+    writeCount--;
+    notifyAll();
   }
 
 }
