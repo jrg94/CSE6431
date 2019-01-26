@@ -16,7 +16,7 @@ cache:
 before_script: cd $TRAVIS_BUILD_DIR/assignment01/doc/
 
 script:
-  - pfdlatex --shell-escape ./assignment01.tex
+  - pdflatex --shell-escape ./assignment01.tex
 
 deploy:
   provider: releases
