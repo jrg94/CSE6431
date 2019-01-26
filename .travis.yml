@@ -1,4 +1,4 @@
-language: generic
+language: r
 
 # Dependency of the minted package
 before_install:
