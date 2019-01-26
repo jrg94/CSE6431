@@ -1,5 +1,3 @@
-language: generic
-
 # Dependency of the minted package
 before_install:
  - sudo apt-get install python-pygments
@@ -15,6 +13,7 @@ cache:
 script:
   - mkdir _build
   - travis_wait 3 pdflatex -shell-escape -output-directory _build ./assignment01/doc/assignment01.tex
+  - cat _build/assignment01.log
 
 notifications:
   email: false
