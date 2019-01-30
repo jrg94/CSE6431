@@ -425,7 +425,9 @@
     it enqueues itself again only to wait for another signal.
 
     When processes are finished, they remove their ID from the total and signal
-    the next process.
+    all other processes. The idea here is that we want to maximize the idTotal
+    whenever possible. If we only signaled the next process, we'd trade one for
+    one after initially maximizing idTotal.
 
     The only time this solution would fail is if a process ID has an ID greater
     than N. Otherwise, life is good.
@@ -441,7 +443,9 @@
       Procedure endAccess
         begin
           idTotal = idTotal - processID;
-          process.signal;
+          while i < process.queue.size
+            process.signal;
+            i++;
         end
     \end{minted}
 
