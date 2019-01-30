@@ -411,6 +411,40 @@
         monitor to coordinate accesses to the file.
     }
 
+    As it turns out, this solution is pretty simple. All we need to do is track
+    a total of all the running process IDs. This total is used to verify access
+    for queued processes.
+
+    In general, we divide the access into two functions: start and end. If
+    a process gets through the start function, they begin access concurrently.
+    When they're done, they call the endAccess function.
+
+    The startAcess function works via a busy loop which is driven by monitor
+    signals. At every iteration, the loop checks if the current process
+    will push the total over N. If not, the process is granted access. Otherwise,
+    it enqueues itself again only to wait for another signal.
+
+    When processes are finished, they remove their ID from the total and signal
+    the next process.
+
+    The only time this solution would fail is if a process ID has an ID greater
+    than N. Otherwise, life is good.
+
+    \begin{minted}{text}
+      Procedure startAccess
+        begin
+          while idTotal + processID > n
+            process.wait;
+          idTotal = idTotal + processID;
+        end
+
+      Procedure endAccess
+        begin
+          idTotal = idTotal - processID;
+          process.signal;
+        end
+    \end{minted}
+
 \end{homeworkProblem}
 
 \pagebreak
