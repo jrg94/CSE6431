@@ -323,6 +323,14 @@
         Write a monitor-based solution to the above problem.
     }
 
+    In this solution, we break up the readers and writers into pairs of
+    start and end functions. In addition, we maintain two queues (writer
+    and reader) as well as two count variables (writers and readers).
+    From there, we drive the alternating logic whenever a process ends.
+    If we're a writer and there are readers available, we signal the readers.
+    Meanwhile, if we're a reader and there are writers available, we signal
+    the writers. The rest of the logic is just record keeping.
+
     \begin{minted}{text}
         Procedure startRead
           begin
