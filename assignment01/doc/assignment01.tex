@@ -300,7 +300,7 @@
 
           P(reader_mutex)
           readers = readers - 1
-          if readers == 0 then V(writer_mutex)
+          if readers = 0 then V(writer_mutex)
           V(reader_mutex)
 
         Procedure writer
@@ -326,7 +326,11 @@
     \begin{minted}{text}
         Procedure startRead
           begin
+            if writers > 0 or writer.queue then
+              reader.wait;
             readers = readers + 1;
+            if !writer.queue then
+              reader.signal;
           end
 
         Procedure endRead
@@ -335,10 +339,20 @@
             if (readers == 0) then writer.signal;
           end
 
-        Procedure writer
+        Procedure startWrite
           begin
-            if (readers > 0) then writer.wait;
-            <write file>
+            if writers > 0 or readers > 0 then
+              writer.wait;
+            writers = writers + 1;
+          end
+
+        Procedure endWrite
+          begin
+            writers = writers - 1;
+            if reader.queue then
+              reader.signal;
+            else
+              writer.signal;
           end
     \end{minted}
 
