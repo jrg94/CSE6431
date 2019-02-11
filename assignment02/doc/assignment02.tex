@@ -159,7 +159,7 @@
     \textbf{
         Show that in Lamport’s distributed mutual exclusion algorithm, the
         critical section is accessed according to the increasing order
-        of timestamps. Then, showthat the same property holds true in
+        of timestamps. Then, show that the same property holds true in
         Ricart-Agrawal’s distributed mutual exclusion algorithm. Does the same
         hold true in Maekawa’s algorithm?
     }
@@ -171,71 +171,9 @@
 \begin{homeworkProblem}
 
     \textbf{
-        Write a semaphore-based solution to the reader–writers problem that works as
-        follows: If readers and writers are both waiting, then it alternates between
-        readers and  writers. Otherwise, it processes them normally, i.e., readers
-        concurrently and writers serially.
+        If two logs are equivalent, are their serializationgraphs identical? If
+        yes, show your proof. Otherwise, give me a counter-example.
     }
-
-    To get this solution working, I largely borrowed the logic from the
-    writer's priority solution. In fact, the reader logic is exactly the
-    same since it already prioritizes writing. As a result, I just
-    needed to make the writer prioritize reading. Then, the processes would
-    properly alternate.
-
-    \begin{minted}{text}
-        Procedure reader
-          P(sr_mutex)
-          if writers_writing > 0 or writers_waiting > 0 then
-            readers_waiting++
-          else
-            V(reader_mutex)
-            readers_reading++
-          V(sr_mutex)
-
-          P(reader_mutex)
-          <read file>
-
-          P(sr_mutex)
-          readers_reading--
-          if readers_reading = 0 and writers_waiting > 0 then
-            V(writer_mutex)
-            writers_waiting--
-            writers_writing++
-          V(sr_mutex)
-    \end{minted}
-
-    Here, we can see that the writer logic is almost exactly the same.
-    However, just before we exist, we test to see if there are any readers
-    waiting first. If there are, we signal a reading. Otherwise, we continue
-    writing. Since readers prioritize writers, we should get control back to the
-    writers as soon as reading is done.
-
-    \begin{minted}{text}
-        Procedure writer
-          P(sr_mutex)
-          if writers_writing > 0 or readers_reading > 0 then
-            writers_waiting++
-          else
-            V(writer_mutex)
-            writers_writing++
-          V(sr_mutex)
-
-          P(writer_mutex)
-          <write file>
-
-          P(sr_mutex)
-          writers_writing--
-          if readers_waiting > 0 then
-            V(reader_mutex)
-            readers_reading++
-            readers_waiting--
-          else if writers_waiting > 0 then
-            V(writer_mutex)
-            writers_writing++
-            writers_waiting--
-          V(sr_mutex)
-    \end{minted}
 
 \end{homeworkProblem}
 
