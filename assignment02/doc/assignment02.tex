@@ -182,49 +182,13 @@
 \begin{homeworkProblem}
 
     \textbf{
-        Write a monitor-based solution to the above problem.
+        Consider a database system in which a set oftransactions are executed.
+        There are two requirements for correct execution of the transactions.
+        First, the log of execution of operations in these transactions must be
+        serializable. Second, the equivalent serial execution must follow a
+        given partial order among the transactions. Describe a concise approach
+        for verifying that the above two conditions are met by a log.
     }
-
-    In this solution, we break up the readers and writers into pairs of
-    start and end functions. In addition, we maintain two queues (writer
-    and reader) as well as two count variables (writers and readers).
-    From there, we drive the alternating logic whenever a process ends.
-    If we're a writer and there are readers available, we signal the readers.
-    Meanwhile, if we're a reader and there are writers available, we signal
-    the writers. The rest of the logic is just record keeping.
-
-    \begin{minted}{text}
-        Procedure startRead
-          begin
-            if writers > 0 or writer.queue then
-              reader.wait;
-            readers = readers + 1;
-            if !writer.queue then
-              reader.signal;
-          end
-
-        Procedure endRead
-          begin
-            readers = readers - 1;
-            if (readers == 0) then writer.signal;
-          end
-
-        Procedure startWrite
-          begin
-            if writers > 0 or readers > 0 then
-              writer.wait;
-            writers = writers + 1;
-          end
-
-        Procedure endWrite
-          begin
-            writers = writers - 1;
-            if reader.queue then
-              reader.signal;
-            else
-              writer.signal;
-          end
-    \end{minted}
 
 \end{homeworkProblem}
 
