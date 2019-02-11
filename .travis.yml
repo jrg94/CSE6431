@@ -1,6 +1,5 @@
 language: generic
 
-# Dependency of the minted package
 before_install:
   - sudo apt-get install python-pygments
 
@@ -12,11 +11,11 @@ cache:
     - /tmp/texlive
     - $HOME/.texlive
 
-# Change working directory so including files will work
-before_script: cd $TRAVIS_BUILD_DIR/assignment01/doc/
+before_script: cd $TRAVIS_BUILD_DIR
 
 script:
-  - pdflatex --shell-escape ./assignment01.tex
+  - pdflatex --shell-escape ./assignment01/doc/assignment01.tex
+  - pdflatex --shell-escape ./assignment02/doc/assignment02.tex
 
 deploy:
   provider: releases
@@ -24,6 +23,7 @@ deploy:
     secure: ${GITHUB_TOKEN}
   file:
     - ./assignment01.pdf
+    - ./assignment02.pdf
   skip_cleanup: true
   on:
     tags: true
