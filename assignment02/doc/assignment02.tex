@@ -209,92 +209,13 @@
 \begin{homeworkProblem}
 
     \textbf{
-        Using Java support for multithreading (Synchronized, wait, and notifyall),
-        write a solution to the producer-consumer problem with a buffer of length N.
-        Submit your solution on paper (i.e. do not worry about exact syntax or debugging).
+        Consider a system consisting of m resources of the same type, being
+        shared by n processes. Resources can be requested or released by
+        processes only one at a time. Show that the system is deadlock free if
+        the following two conditions hold:
+        1) the maximum need of each process is between 1 and m resources, and
+        2) the sum of all maximum needs is less than m + n.
     }
-
-    The following solution demonstrates just the shared memory portion of the
-    producers/consumers problem. In addition to this class, you'd need to create
-    producer and consumer classes which call the produce and consume methods
-    in some way.
-
-    \begin{minted}{java}
-        /**
-         * A shared memory space class with functions for consumption and production.
-         *
-         * @author Jeremy Grifski
-         */
-        public class Buffer {
-          private ArrayList<Integer> buffer;
-          private maxSize;
-
-          public Buffer(int maxSize) {
-            this.buffer = new ArrayList<Integer>();
-            this.maxSize = maxSize;
-          }
-
-          /**
-           * A production method which generates a random value between 0 and 1000
-           * and places it at the end of shared memory.
-           */
-          public synchronized void produce() {
-            while (buffer.size() == maxSize) {
-              try {
-                wait();
-              } catch (InterruptedException e) {
-                System.out.println("Producer awoken!");
-              }
-            }
-            this.buffer.add((int)(Math.random() * 1000));
-            notifyAll();
-          }
-
-          /**
-           * A consumption method which consumes the first value from the buffer.
-           */
-          public synchronized int consume() {
-            while(buffer.isEmpty()) {
-              try {
-                wait();
-              } catch (InterruptedException e) {
-                System.out.println("Consumer awoken!");
-              }
-            }
-            int value = this.buffer.remove(0);
-            notifyAll();
-            return value;
-          }
-        }
-    \end{minted}
-
-    As you can see, this solution leverages all that is asked via synchronized,
-    wait, and notifyAll. The following code snippets are the class stubs for
-    the producer and consumer classes:
-
-    \begin{minted}{java}
-        public class Producer extends Thread {
-          private Buffer sharedMemory;
-
-          public Producer(Buffer sharedMemory) {}
-
-          public void run() {
-            // Implement production loop
-          }
-        }
-    \end{minted}
-
-    \begin{minted}{java}
-        public class Consumer extends Thread {
-          private Buffer sharedMemory;
-
-          public Consumer(Buffer sharedMemory) {}
-
-          public void run() {
-            // Implement consumption loop
-          }
-        }
-    \end{minted}
 
 \end{homeworkProblem}
 
