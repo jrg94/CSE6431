@@ -145,92 +145,10 @@
 \begin{homeworkProblem}
 
     \textbf{
-        Implement a solution with writers’ priority to the readers/writers problem
-        using semaphores.
+        Lamport’  algorithm  requires  messages  to  be  delivered  in  FIFO
+        order  between  every pair of sites. Does Ricart-Agrawala’s algorithm
+        require the same assumption to work? Explain your answer.
     }
-
-    Alright, this problem is going to need a bit of explaining because this
-    solution is very complicated. To start, we have the reader procedure
-    which is split into two parts leveraging three mutexes and four variables.
-    The four variables are readers\_waiting, readers\_reading, writers\_writing,
-    and writers\_waiting.
-
-    To get into the procedure, the process needs to aquire the sr\_mutex. After
-    that, the reader assesses its ability to read which is based on writers
-    due to the writers priority. If it's safe to read, the process increments
-    the readers\_reading variable and frees the reader\_mutex. Otherwise, the process
-    increments the readers\_waiting variable. In either case, the process frees
-    the sr\_mutex before asking for the reader\_mutex.
-
-    Once the process aquires the reader\_mutex, it reads before attempting
-    to acquire the sr\_mutex. If successful, the process decrements the
-    readers\_reading variable and attempts to give control to writers as long
-    as their are writings waiting and there are no active readers. Finally,
-    the process gives up the sr\_mutex.
-
-    \begin{minted}{text}
-        Procedure reader
-          P(sr_mutex)
-          if writers_writing > 0 or writers_waiting > 0 then
-            readers_waiting++
-          else
-            V(reader_mutex)
-            readers_reading++
-          V(sr_mutex)
-
-          P(reader_mutex)
-          <read file>
-
-          P(sr_mutex)
-          readers_reading--
-          if readers_reading = 0 and writers_waiting > 0 then
-            V(writer_mutex)
-            writers_waiting--
-            writers_writing++
-          V(sr_mutex)
-    \end{minted}
-
-    Meanwhile, the writing process is just as complicated. To start, the process
-    attempts to acquire the sr\_mutex. If successful, it verifies that there
-    aren't any writers writing or readers reading. If there are, the process
-    increments the writers\_waiting variable. Otherwise, the process gives the
-    go ahead for writing and increments the writers\_writing variable.
-
-    At that point, the process gives up the sr\_mutex and attempts to acquire
-    the writer\_mutex to begin writing. If successful, the process begins
-    writing before attempting to acquire the sr\_mutex once again.
-
-    With writing out of the way, the process decrements the number of writers
-    writing before testing to see if there are any writers waiting. If so,
-    the process signals the next writer. Otherwise, the process checks for
-    waiting readers. If there are any, the process passes control over
-    to the next reader before freeing the sr\_mutex.
-
-    \begin{minted}{text}
-        Procedure writer
-          P(sr_mutex)
-          if writers_writing > 0 or readers_reading > 0 then
-            writers_waiting++
-          else
-            V(writer_mutex)
-            writers_writing++
-          V(sr_mutex)
-
-          P(writer_mutex)
-          <write file>
-
-          P(sr_mutex)
-          writers_writing--
-          if writers_waiting > 0 then
-            V(writer_mutex)
-            writers_writing++
-            writers_waiting--
-          else if readers_waiting > 0 then
-            V(reader_mutex)
-            readers_reading++
-            readers_waiting--
-          V(sr_mutex)
-    \end{minted}
 
 \end{homeworkProblem}
 
