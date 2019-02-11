@@ -1,0 +1,636 @@
+\documentclass{article}
+
+\usepackage{fancyhdr}
+\usepackage{extramarks}
+\usepackage{minted}
+\usepackage{color}
+\usepackage[english]{babel}
+
+%
+% Basic Document Settings
+%
+
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in
+
+\linespread{1.1}
+
+\pagestyle{fancy}
+\lhead{\hmwkAuthorName}
+\chead{\hmwkClass\ (\hmwkClassInstructor): \hmwkTitle}
+\rhead{\firstxmark}
+\lfoot{\lastxmark}
+\cfoot{\thepage}
+
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\setlength\parindent{0pt}
+\setlength{\parskip}{1em}
+
+%
+% Minted Settings
+%
+
+\setminted{frame=lines}
+\setminted{linenos}
+\setminted{autogobble}
+
+%
+% Create Problem Sections
+%
+
+\newcommand{\enterProblemHeader}[1]{
+    \nobreak\extramarks{}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+    \nobreak\extramarks{Problem \arabic{#1} (continued)}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+}
+
+\newcommand{\exitProblemHeader}[1]{
+    \nobreak\extramarks{Problem \arabic{#1} (continued)}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+    \stepcounter{#1}
+    \nobreak\extramarks{Problem \arabic{#1}}{}\nobreak{}
+}
+
+\setcounter{secnumdepth}{0}
+\newcounter{partCounter}
+\newcounter{homeworkProblemCounter}
+\setcounter{homeworkProblemCounter}{1}
+\nobreak\extramarks{Problem \arabic{homeworkProblemCounter}}{}\nobreak{}
+
+%
+% Homework Problem Environment
+%
+% This environment takes an optional argument. When given, it will adjust the
+% problem counter. This is useful for when the problems given for your
+% assignment aren't sequential. See the last 3 problems of this template for an
+% example.
+%
+\newenvironment{homeworkProblem}[1][-1]{
+    \ifnum#1>0
+        \setcounter{homeworkProblemCounter}{#1}
+    \fi
+    \section{Problem \arabic{homeworkProblemCounter}}
+    \setcounter{partCounter}{1}
+    \enterProblemHeader{homeworkProblemCounter}
+}{
+    \exitProblemHeader{homeworkProblemCounter}
+}
+
+%
+% Homework Details
+%   - Title
+%   - Due date
+%   - Class
+%   - Section/Time
+%   - Instructor
+%   - Author
+%
+
+\newcommand{\hmwkTitle}{Assignment\ \#1}
+\newcommand{\hmwkDueDate}{February 05, 2019}
+\newcommand{\hmwkClass}{CSE 6431}
+\newcommand{\hmwkClassInstructor}{Professor Qin}
+\newcommand{\hmwkAuthorName}{\textbf{Jeremy Grifski}}
+
+%
+% Title Page
+%
+
+\title{
+    \vspace{2in}
+    \textmd{\textbf{\hmwkClass:\ \hmwkTitle}}\\
+    \normalsize\vspace{0.1in}\small{Due\ on\ \hmwkDueDate\ at 11:10am}\\
+    \vspace{0.1in}\large{\textit{\hmwkClassInstructor}}
+    \vspace{3in}
+}
+
+\author{\hmwkAuthorName}
+\date{}
+
+\renewcommand{\part}[1]{\textbf{\large Part \Alph{partCounter}}\stepcounter{partCounter}\\}
+
+%
+% Various Helper Commands
+%
+
+
+% For derivatives
+\newcommand{\deriv}[1]{\frac{\mathrm{d}}{\mathrm{d}x} (#1)}
+
+% For partial derivatives
+\newcommand{\pderiv}[2]{\frac{\partial}{\partial #1} (#2)}
+
+% Integral dx
+\newcommand{\dx}{\mathrm{d}x}
+
+% Alias for the Solution section header
+\newcommand{\solution}{\textbf{\large Solution}}
+
+% Probability commands: Expectation, Variance, Covariance, Bias
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\Bias}{\mathrm{Bias}}
+
+\begin{document}
+
+\maketitle
+
+\pagebreak
+
+\begin{homeworkProblem}
+
+    \textbf{
+        Implement a solution with writers’ priority to the readers/writers problem
+        using semaphores.
+    }
+
+    Alright, this problem is going to need a bit of explaining because this
+    solution is very complicated. To start, we have the reader procedure
+    which is split into two parts leveraging three mutexes and four variables.
+    The four variables are readers\_waiting, readers\_reading, writers\_writing,
+    and writers\_waiting.
+
+    To get into the procedure, the process needs to aquire the sr\_mutex. After
+    that, the reader assesses its ability to read which is based on writers
+    due to the writers priority. If it's safe to read, the process increments
+    the readers\_reading variable and frees the reader\_mutex. Otherwise, the process
+    increments the readers\_waiting variable. In either case, the process frees
+    the sr\_mutex before asking for the reader\_mutex.
+
+    Once the process aquires the reader\_mutex, it reads before attempting
+    to acquire the sr\_mutex. If successful, the process decrements the
+    readers\_reading variable and attempts to give control to writers as long
+    as their are writings waiting and there are no active readers. Finally,
+    the process gives up the sr\_mutex.
+
+    \begin{minted}{text}
+        Procedure reader
+          P(sr_mutex)
+          if writers_writing > 0 or writers_waiting > 0 then
+            readers_waiting++
+          else
+            V(reader_mutex)
+            readers_reading++
+          V(sr_mutex)
+
+          P(reader_mutex)
+          <read file>
+
+          P(sr_mutex)
+          readers_reading--
+          if readers_reading = 0 and writers_waiting > 0 then
+            V(writer_mutex)
+            writers_waiting--
+            writers_writing++
+          V(sr_mutex)
+    \end{minted}
+
+    Meanwhile, the writing process is just as complicated. To start, the process
+    attempts to acquire the sr\_mutex. If successful, it verifies that there
+    aren't any writers writing or readers reading. If there are, the process
+    increments the writers\_waiting variable. Otherwise, the process gives the
+    go ahead for writing and increments the writers\_writing variable.
+
+    At that point, the process gives up the sr\_mutex and attempts to acquire
+    the writer\_mutex to begin writing. If successful, the process begins
+    writing before attempting to acquire the sr\_mutex once again.
+
+    With writing out of the way, the process decrements the number of writers
+    writing before testing to see if there are any writers waiting. If so,
+    the process signals the next writer. Otherwise, the process checks for
+    waiting readers. If there are any, the process passes control over
+    to the next reader before freeing the sr\_mutex.
+
+    \begin{minted}{text}
+        Procedure writer
+          P(sr_mutex)
+          if writers_writing > 0 or readers_reading > 0 then
+            writers_waiting++
+          else
+            V(writer_mutex)
+            writers_writing++
+          V(sr_mutex)
+
+          P(writer_mutex)
+          <write file>
+
+          P(sr_mutex)
+          writers_writing--
+          if writers_waiting > 0 then
+            V(writer_mutex)
+            writers_writing++
+            writers_waiting--
+          else if readers_waiting > 0 then
+            V(reader_mutex)
+            readers_reading++
+            readers_waiting--
+          V(sr_mutex)
+    \end{minted}
+
+\end{homeworkProblem}
+
+\pagebreak
+
+\begin{homeworkProblem}
+
+    \textbf{
+        Implement a solution to the readers/writers problem using monitors which
+        execute the requests in FCFS manner. If there are consecutive readers,
+        they should be able to access the file concurrently.
+    }
+
+    In this solution, we track two variables: the numbers or readers and the
+    number of writers. In addition, we also use a shared queue, so that all
+    jobs are queued in FCFS order. Readers can only read if there are no writers,
+    and writers can only write if there are no readers. However, readers can
+    read concurrently as their function is split into two.
+
+    \begin{minted}{text}
+        Procedure startRead
+          begin
+            if (writers > 0) then all.wait;
+            readers++;
+          end
+
+        Procedure endRead
+          begin
+            readers--;
+            if (readers == 0) then all.signal;
+          end
+
+        Procedure writer
+          begin
+            writers++;
+            if (readers > 0) then all.wait;
+            <write file>
+            writers--;
+            all.signal
+          end
+    \end{minted}
+
+\end{homeworkProblem}
+
+\pagebreak
+
+\begin{homeworkProblem}
+
+    \textbf{
+        Write a semaphore-based solution to the reader–writers problem that works as
+        follows: If readers and writers are both waiting, then it alternates between
+        readers and  writers. Otherwise, it processes them normally, i.e., readers
+        concurrently and writers serially.
+    }
+
+    To get this solution working, I largely borrowed the logic from the
+    writer's priority solution. In fact, the reader logic is exactly the
+    same since it already prioritizes writing. As a result, I just
+    needed to make the writer prioritize reading. Then, the processes would
+    properly alternate.
+
+    \begin{minted}{text}
+        Procedure reader
+          P(sr_mutex)
+          if writers_writing > 0 or writers_waiting > 0 then
+            readers_waiting++
+          else
+            V(reader_mutex)
+            readers_reading++
+          V(sr_mutex)
+
+          P(reader_mutex)
+          <read file>
+
+          P(sr_mutex)
+          readers_reading--
+          if readers_reading = 0 and writers_waiting > 0 then
+            V(writer_mutex)
+            writers_waiting--
+            writers_writing++
+          V(sr_mutex)
+    \end{minted}
+
+    Here, we can see that the writer logic is almost exactly the same.
+    However, just before we exist, we test to see if there are any readers
+    waiting first. If there are, we signal a reading. Otherwise, we continue
+    writing. Since readers prioritize writers, we should get control back to the
+    writers as soon as reading is done.
+
+    \begin{minted}{text}
+        Procedure writer
+          P(sr_mutex)
+          if writers_writing > 0 or readers_reading > 0 then
+            writers_waiting++
+          else
+            V(writer_mutex)
+            writers_writing++
+          V(sr_mutex)
+
+          P(writer_mutex)
+          <write file>
+
+          P(sr_mutex)
+          writers_writing--
+          if readers_waiting > 0 then
+            V(reader_mutex)
+            readers_reading++
+            readers_waiting--
+          else if writers_waiting > 0 then
+            V(writer_mutex)
+            writers_writing++
+            writers_waiting--
+          V(sr_mutex)
+    \end{minted}
+
+\end{homeworkProblem}
+
+\pagebreak
+
+\begin{homeworkProblem}
+
+    \textbf{
+        Write a monitor-based solution to the above problem.
+    }
+
+    In this solution, we break up the readers and writers into pairs of
+    start and end functions. In addition, we maintain two queues (writer
+    and reader) as well as two count variables (writers and readers).
+    From there, we drive the alternating logic whenever a process ends.
+    If we're a writer and there are readers available, we signal the readers.
+    Meanwhile, if we're a reader and there are writers available, we signal
+    the writers. The rest of the logic is just record keeping.
+
+    \begin{minted}{text}
+        Procedure startRead
+          begin
+            if writers > 0 or writer.queue then
+              reader.wait;
+            readers = readers + 1;
+            if !writer.queue then
+              reader.signal;
+          end
+
+        Procedure endRead
+          begin
+            readers = readers - 1;
+            if (readers == 0) then writer.signal;
+          end
+
+        Procedure startWrite
+          begin
+            if writers > 0 or readers > 0 then
+              writer.wait;
+            writers = writers + 1;
+          end
+
+        Procedure endWrite
+          begin
+            writers = writers - 1;
+            if reader.queue then
+              reader.signal;
+            else
+              writer.signal;
+          end
+    \end{minted}
+
+\end{homeworkProblem}
+
+\pagebreak
+
+\begin{homeworkProblem}
+
+    \textbf{
+        A file is to be shared among different processes, each of which has a unique
+        number. The file can be accessed simultaneously by several processes, subject
+        to the following constraint: The sum of all unique numbers associated with all
+        the processes concurrently accessing the file must be less than n. Write a
+        monitor to coordinate accesses to the file.
+    }
+
+    As it turns out, this solution is pretty simple. All we need to do is track
+    a total of all the running process IDs. This total is used to verify access
+    for queued processes.
+
+    In general, we divide the access into two functions: start and end. If
+    a process gets through the start function, they begin access concurrently.
+    When they're done, they call the endAccess function.
+
+    The startAcess function works via a busy loop which is driven by monitor
+    signals. At every iteration, the loop checks if the current process
+    will push the total over N. If not, the process is granted access. Otherwise,
+    it enqueues itself again only to wait for another signal.
+
+    When processes are finished, they remove their ID from the total and signal
+    all other processes. The idea here is that we want to maximize the idTotal
+    whenever possible. If we only signaled the next process, we'd trade one for
+    one after initially maximizing idTotal.
+
+    \begin{minted}{text}
+      Procedure startAccess
+        begin
+          while idTotal + processID > n
+            process.wait;
+          idTotal = idTotal + processID;
+        end
+
+      Procedure endAccess
+        begin
+          idTotal = idTotal - processID;
+          while i < process.queue.size
+            process.signal;
+            i++;
+        end
+    \end{minted}
+
+\end{homeworkProblem}
+
+\pagebreak
+
+\begin{homeworkProblem}
+
+    \textbf{
+        Using Java support for multithreading (Synchronized, wait, and notifyall),
+        write a solution to the producer-consumer problem with a buffer of length N.
+        Submit your solution on paper (i.e. do not worry about exact syntax or debugging).
+    }
+
+    The following solution demonstrates just the shared memory portion of the
+    producers/consumers problem. In addition to this class, you'd need to create
+    producer and consumer classes which call the produce and consume methods
+    in some way.
+
+    \begin{minted}{java}
+        /**
+         * A shared memory space class with functions for consumption and production.
+         *
+         * @author Jeremy Grifski
+         */
+        public class Buffer {
+          private ArrayList<Integer> buffer;
+          private maxSize;
+
+          public Buffer(int maxSize) {
+            this.buffer = new ArrayList<Integer>();
+            this.maxSize = maxSize;
+          }
+
+          /**
+           * A production method which generates a random value between 0 and 1000
+           * and places it at the end of shared memory.
+           */
+          public synchronized void produce() {
+            while (buffer.size() == maxSize) {
+              try {
+                wait();
+              } catch (InterruptedException e) {
+                System.out.println("Producer awoken!");
+              }
+            }
+            this.buffer.add((int)(Math.random() * 1000));
+            notifyAll();
+          }
+
+          /**
+           * A consumption method which consumes the first value from the buffer.
+           */
+          public synchronized int consume() {
+            while(buffer.isEmpty()) {
+              try {
+                wait();
+              } catch (InterruptedException e) {
+                System.out.println("Consumer awoken!");
+              }
+            }
+            int value = this.buffer.remove(0);
+            notifyAll();
+            return value;
+          }
+        }
+    \end{minted}
+
+    As you can see, this solution leverages all that is asked via synchronized,
+    wait, and notifyAll. The following code snippets are the class stubs for
+    the producer and consumer classes:
+
+    \begin{minted}{java}
+        public class Producer extends Thread {
+          private Buffer sharedMemory;
+
+          public Producer(Buffer sharedMemory) {}
+
+          public void run() {
+            // Implement production loop
+          }
+        }
+    \end{minted}
+
+    \begin{minted}{java}
+        public class Consumer extends Thread {
+          private Buffer sharedMemory;
+
+          public Consumer(Buffer sharedMemory) {}
+
+          public void run() {
+            // Implement consumption loop
+          }
+        }
+    \end{minted}
+
+\end{homeworkProblem}
+
+\pagebreak
+
+\begin{homeworkProblem}
+
+    \textbf{
+        Using Java support for multithreading (Synchronized, wait, and notifyall),
+        write a solution to the readers-writers problem, with exclusive writer access,
+        concurrent reader access, and reader’s priority. Submit your solution on paper
+        (i.e. do not worry about exact syntax or debugging).
+    }
+
+    In this solution, I tried to model everything after the existing readers and
+    writers solution using monitors. Instead of using a busy flag, I used a
+    writers count which serves the exact same purpose. Since there are no queues
+    to control directly, I notify all every time a process finishes and let the
+    start loops sort everything out.
+
+    Once again, you'll notice that I don't provide the Reader and Writer clases
+    as they're more or less not important. The main shared resource logic
+    is here in the SharedFile class. Regardless, the class stubs would look
+    similar to the ones displayed in the previous problem.
+
+    \begin{minted}{java}
+        /**
+         * A shared file with functionality for reading and writing.
+         *
+         * @author Jeremy Grifski
+         */
+        public class SharedFile {
+
+          private int readCount;
+          private int writeCount;
+
+          public SharedFile() {
+            this.readCount = 0;
+            this.writeCount = 0;
+          }
+
+          /**
+           * A start read method which kicks off reading iff there are no writers.
+           */
+          public synchronized void startRead() {
+            while (writeCount > 0) {
+              try {
+                wait();
+              } catch (InterruptedException e) {
+                System.out.println("Reader wants to read!");
+              }
+            }
+            readCount++;
+            notifyAll();
+          }
+
+          /**
+           * An end read method which notifies everyone when there are no readers left.
+           */
+          public synchronized void endRead() {
+            readCount--;
+            if (this.readCount == 0) {
+              notifyAll();
+            }
+          }
+
+          /**
+           * A start write method which kicks off writing if there are no other readers
+           * or writers.
+           */
+          public synchronized void startWrite() {
+            while (readCount > 0 || writeCount > 0) {
+              try {
+                wait();
+              } catch (InterruptedException e) {
+                System.out.println("Writer wants to write!")
+              }
+            }
+            writeCount++;
+          }
+
+          /**
+           * An end write method whichs notifies everyone when writing is done.
+           */
+          public synchronized void endWrite() {
+            writeCount--;
+            notifyAll();
+          }
+
+        }
+    \end{minted}
+
+\end{homeworkProblem}
+
+\end{document}
