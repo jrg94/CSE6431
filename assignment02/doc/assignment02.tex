@@ -145,8 +145,8 @@
 \begin{homeworkProblem}
 
     \textbf{
-        Lamport’  algorithm  requires  messages  to  be  delivered  in  FIFO
-        order  between  every pair of sites. Does Ricart-Agrawala’s algorithm
+        Lamport’ algorithm requires messages to be delivered in FIFO
+        order between every pair of sites. Does Ricart-Agrawala’s algorithm
         require the same assumption to work? Explain your answer.
     }
 
@@ -157,39 +157,12 @@
 \begin{homeworkProblem}
 
     \textbf{
-        Implement a solution to the readers/writers problem using monitors which
-        execute the requests in FCFS manner. If there are consecutive readers,
-        they should be able to access the file concurrently.
+        Show that in Lamport’s distributed mutual exclusion algorithm, the
+        critical section is accessed according to the increasing order
+        of timestamps. Then, showthat the same property holds true in
+        Ricart-Agrawal’s distributed mutual exclusion algorithm. Does the same
+        hold true in Maekawa’s algorithm?
     }
-
-    In this solution, we track two variables: the numbers or readers and the
-    number of writers. In addition, we also use a shared queue, so that all
-    jobs are queued in FCFS order. Readers can only read if there are no writers,
-    and writers can only write if there are no readers. However, readers can
-    read concurrently as their function is split into two.
-
-    \begin{minted}{text}
-        Procedure startRead
-          begin
-            if (writers > 0) then all.wait;
-            readers++;
-          end
-
-        Procedure endRead
-          begin
-            readers--;
-            if (readers == 0) then all.signal;
-          end
-
-        Procedure writer
-          begin
-            writers++;
-            if (readers > 0) then all.wait;
-            <write file>
-            writers--;
-            all.signal
-          end
-    \end{minted}
 
 \end{homeworkProblem}
 
