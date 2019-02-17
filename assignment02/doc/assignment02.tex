@@ -179,7 +179,7 @@
     In Lamport's algorithm, the critical section is accessed according to the
     increasing order of timestamps due to the way request queues are handled.
     Every time a process receives a request, the request is placed onto that
-    processes request queue in order of timestamp. These queues are synchronized
+    process's request queue in order of timestamp. These queues are synchronized
     between every processes, so all processes are aware of the order. At any
     given time, only the process with the smallest timestamp in the request
     queue can access its critical section.
@@ -190,11 +190,17 @@
 
     \begin{enumerate}
       \item They're not making a request
-      \item They are making a request, but their timestamp is greater than an incoming request
+      \item They're making a request, but their timestamp is greater than an incoming request
     \end{enumerate}
 
     The second condition guarantees that processes access their critical section
     in increasing order of timestamps.
+
+    Finally, the premise that the critical section is accessed according to the
+    increasing order of timestamps does not hold for Maekawa's algorithm. It's
+    precisely this fact which makes Maekawa's algorithm deadlock prone. Without
+    using priority based on timestamps, the algorithm may generate a cycle between
+    request sites which results in a deadlock.
 
 \end{homeworkProblem}
 
