@@ -145,10 +145,22 @@
 \begin{homeworkProblem}
 
     \textbf{
-        Lamport’ algorithm requires messages to be delivered in FIFO
+        Lamport’s algorithm requires messages to be delivered in FIFO
         order between every pair of sites. Does Ricart-Agrawala’s algorithm
         require the same assumption to work? Explain your answer.
     }
+
+    No! Since each process requires a REPLY from all other processes to begin
+    executing their critical section AND the process with the lowest timestamp
+    gets priority, there's no opportunity for multiple processes to hit
+    their critical section at the same time even without the FIFO assumption.
+
+    This differs from Lamport's algorithm because replies are combined with
+    releases. In Lamport's algorithm, replies grant access to the critical
+    section based on each process's local queue. If the communication channels
+    are not FIFE, it's possible that the queues are not the same for all
+    processes which means multiple processes can enter their critical section
+    simultaneously. This is not a problem with the Ricart-Agrawala solution.
 
 \end{homeworkProblem}
 
