@@ -1,0 +1,340 @@
+\documentclass{article}
+
+\usepackage{fancyhdr}
+\usepackage{extramarks}
+\usepackage{minted}
+\usepackage{color}
+\usepackage[english]{babel}
+
+%
+% Basic Document Settings
+%
+
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in
+
+\linespread{1.1}
+
+\pagestyle{fancy}
+\lhead{\hmwkAuthorName}
+\chead{\hmwkClass\ (\hmwkClassInstructor): \hmwkTitle}
+\rhead{\firstxmark}
+\lfoot{\lastxmark}
+\cfoot{\thepage}
+
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\setlength\parindent{0pt}
+\setlength{\parskip}{1em}
+
+%
+% Minted Settings
+%
+
+\setminted{frame=lines}
+\setminted{linenos}
+\setminted{autogobble}
+
+%
+% Create Problem Sections
+%
+
+\newcommand{\enterProblemHeader}[1]{
+    \nobreak\extramarks{}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+    \nobreak\extramarks{Problem \arabic{#1} (continued)}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+}
+
+\newcommand{\exitProblemHeader}[1]{
+    \nobreak\extramarks{Problem \arabic{#1} (continued)}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+    \stepcounter{#1}
+    \nobreak\extramarks{Problem \arabic{#1}}{}\nobreak{}
+}
+
+\setcounter{secnumdepth}{0}
+\newcounter{partCounter}
+\newcounter{homeworkProblemCounter}
+\setcounter{homeworkProblemCounter}{1}
+\nobreak\extramarks{Problem \arabic{homeworkProblemCounter}}{}\nobreak{}
+
+%
+% Homework Problem Environment
+%
+% This environment takes an optional argument. When given, it will adjust the
+% problem counter. This is useful for when the problems given for your
+% assignment aren't sequential. See the last 3 problems of this template for an
+% example.
+%
+\newenvironment{homeworkProblem}[1][-1]{
+    \ifnum#1>0
+        \setcounter{homeworkProblemCounter}{#1}
+    \fi
+    \section{Problem \arabic{homeworkProblemCounter}}
+    \setcounter{partCounter}{1}
+    \enterProblemHeader{homeworkProblemCounter}
+}{
+    \exitProblemHeader{homeworkProblemCounter}
+}
+
+%
+% Homework Details
+%   - Title
+%   - Due date
+%   - Class
+%   - Section/Time
+%   - Instructor
+%   - Author
+%
+
+\newcommand{\hmwkTitle}{Assignment\ \#2}
+\newcommand{\hmwkDueDate}{February 28, 2019}
+\newcommand{\hmwkClass}{CSE 6431}
+\newcommand{\hmwkClassInstructor}{Professor Qin}
+\newcommand{\hmwkAuthorName}{\textbf{Jeremy Grifski}}
+
+%
+% Title Page
+%
+
+\title{
+    \vspace{2in}
+    \textmd{\textbf{\hmwkClass:\ \hmwkTitle}}\\
+    \normalsize\vspace{0.1in}\small{Due\ on\ \hmwkDueDate\ at 11:10am}\\
+    \vspace{0.1in}\large{\textit{\hmwkClassInstructor}}
+    \vspace{3in}
+}
+
+\author{\hmwkAuthorName}
+\date{}
+
+\renewcommand{\part}[1]{\textbf{\large Part \Alph{partCounter}}\stepcounter{partCounter}\\}
+
+%
+% Various Helper Commands
+%
+
+
+% For derivatives
+\newcommand{\deriv}[1]{\frac{\mathrm{d}}{\mathrm{d}x} (#1)}
+
+% For partial derivatives
+\newcommand{\pderiv}[2]{\frac{\partial}{\partial #1} (#2)}
+
+% Integral dx
+\newcommand{\dx}{\mathrm{d}x}
+
+% Alias for the Solution section header
+\newcommand{\solution}{\textbf{\large Solution}}
+
+% Probability commands: Expectation, Variance, Covariance, Bias
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\Bias}{\mathrm{Bias}}
+
+\begin{document}
+
+\maketitle
+
+\pagebreak
+
+\begin{homeworkProblem}
+
+    \textbf{
+        Lamport’s algorithm requires messages to be delivered in FIFO
+        order between every pair of sites. Does Ricart-Agrawala’s algorithm
+        require the same assumption to work? Explain your answer.
+    }
+
+    No! Since each process requires a REPLY from all other processes to begin
+    executing their critical section AND the process with the lowest timestamp
+    gets priority, there's no opportunity for multiple processes to hit
+    their critical section at the same time even without the FIFO assumption.
+
+    This differs from Lamport's algorithm because replies are combined with
+    releases. In Lamport's algorithm, replies grant access to the critical
+    section based on each process's local queue. If the communication channels
+    are not FIFO, it's possible that the queues are not the same for all
+    processes which means multiple processes can enter their critical section
+    simultaneously. This is not a problem with the Ricart-Agrawala solution.
+
+\end{homeworkProblem}
+
+\begin{homeworkProblem}
+
+    \textbf{
+        Show that in Lamport’s distributed mutual exclusion algorithm, the
+        critical section is accessed according to the increasing order
+        of timestamps. Then, show that the same property holds true in
+        Ricart-Agrawal’s distributed mutual exclusion algorithm. Does the same
+        hold true in Maekawa’s algorithm?
+    }
+
+    In Lamport's algorithm, the critical section is accessed according to the
+    increasing order of timestamps due to the way request queues are handled.
+    Every time a process receives a request, the request is placed onto that
+    process's request queue in order of timestamp. These queues are synchronized
+    between every processes, so all processes are aware of the order. At any
+    given time, only the process with the smallest timestamp in the request
+    queue can access its critical section.
+
+    In Ricart-Agrawala's algorithm, the critical section is accessed according
+    to the increasing order of timestamps due to the way replies are managed.
+    Processes only send replies under two conditions:
+
+    \begin{enumerate}
+      \item They're not making a request
+      \item They're making a request, but their timestamp is greater than an
+      incoming request
+    \end{enumerate}
+
+    The second condition guarantees that processes access their critical section
+    in increasing order of timestamps.
+
+    Finally, the premise that the critical section is accessed according to the
+    increasing order of timestamps does not hold for Maekawa's algorithm. It's
+    precisely this fact which makes Maekawa's algorithm deadlock prone. Without
+    using priority based on timestamps, the algorithm may generate a cycle between
+    request sites which results in a deadlock.
+
+\end{homeworkProblem}
+
+\pagebreak
+
+\begin{homeworkProblem}
+
+    \textbf{
+        If two logs are equivalent, are their serialization graphs identical? If
+        yes, show your proof. Otherwise, give me a counter-example.
+    }
+
+    If a serialization graph has more than one topological sort, it's
+    possible to construct multiple equivalent logs from that graph. In other
+    words, two equivalent logs very well could have the same serialization
+    graph. Whether or not they're guaranteed to have the same serialization
+    graph is a tougher question to answer. To the best of my ability, I'm going
+    to argue yes!
+
+    Given a log, L1, there is only one serialization graph, G1, the can be
+    constructed, assuming L1 is serializable (containing no cycles). In order
+    for two logs, L1 and L2, to construct two different serialization graphs, G1
+    and G2, but still be equivalent, their serialization graphs would have to
+    have overlapping topological sorting sets, T1 and T2. In other words, the
+    intersection of T1 and T2 would yield L1 and L2, but G1 and G2 wouldn't be
+    equivalent. Is this possible?
+
+    Unfortunately, it is not possible. In order to construct two graphs
+    that share a topological sort but are different, we'd have to have two logs
+    that are not equivalent which violates our assumption. In other words, we'd
+    have to construct two logs that have different operations in them such as
+    an extra write to incorporate an additional edge in the graph. The additional
+    edge could allow for overlapping sorts, but the original logs would no
+    longer be equivalent.
+
+\end{homeworkProblem}
+
+\begin{homeworkProblem}
+
+    \textbf{
+        Consider a database system in which a set of transactions are executed.
+        There are two requirements for correct execution of the transactions.
+        First, the log of execution of operations in these transactions must be
+        serializable. Second, the equivalent serial execution must follow a
+        given partial order among the transactions. Describe a concise approach
+        for verifying that the above two conditions are met by a log.
+    }
+
+    To verify that a log of execution is serializable, we must constuct a
+    serialization graph using the condition that edge Ti $\rightarrow$ Tj then
+    for some x either ri[x] < wj[x] or wi[x] < rj[x] or wi[x] < wj[x].
+
+    From there, we need to check that the graph has no cycles. To do so, we can use
+    a depth first traversal to check if there are any back edges in the graph.
+
+    The partial order is then generated from a topological sort. Topological
+    sorts are not unique, so as long as the log interleaves the transactions
+    in a way to preserve the partial order of one of the potential topological
+    sorts it should be fine.
+
+\end{homeworkProblem}
+
+\pagebreak
+
+\begin{homeworkProblem}
+
+    \textbf{
+        Assume a system has P processes and R identical units of a reusable
+        resource. If each process can claim at most N units of a resource, show
+        that the system will be deadlock free if and only if $R >= P(N-1) + 1$.
+    }
+
+    In English, there must be at least N number of units of a resource
+    minus one used by P processes plus one to avoid a deadlock. After all, that
+    makes sense. If each process can use at most N units of a resource, we'd
+    need to have roughly that many resources times the number of processes
+    available, so no processes are ever waiting. Or, more formally:
+
+    \begin{enumerate}
+      \item Let P be the number of processes a system has
+      \item Let R be the number of identical units of a reusable resource
+      \item Let N be the number of units of a resource that can be claimed by a
+      process
+      \item If a process needs at most N units of a resource to begin working,
+      then at any given time we would need to satisfy that condition for at least
+      one process. In other words, R has to be at least N. (base case)
+      \item To avoid deadlocks, however, we would need to assume that all
+      processes had consumed all remaining resources and needed just one unit
+      of a resource to move on. In other words, one process has N resources and
+      the remaining processes, (P-1), would have (N-1) resources.
+      \item Put into an equation, we could say: $R >= N + (P-1)(N-1)$.
+      \item Distribute: $R >= N + PN - P - N + 1$
+      \item Remove N: $R >= PN - P + 1$
+      \item Factor P: $R >= P(N-1) + 1$
+    \end{enumerate}
+
+    In the end, we end up with the expected equation.
+
+\end{homeworkProblem}
+
+\pagebreak
+
+\begin{homeworkProblem}
+
+    \textbf{
+        Consider a system consisting of m resources of the same type, being
+        shared by n processes. Resources can be requested or released by
+        processes only one at a time. Show that the system is deadlock free if
+        the following two conditions hold:
+        1) the maximum need of each process is between 1 and m resources, and
+        2) the sum of all maximum needs is less than m + n.
+    }
+
+    Clearly, the first condition needs to be met because a process can't
+    proceed if there were never enough resources to begin with.
+
+    As for the second condition, the explanation is a bit more nuanced. The
+    condition is that the sum of all maximum needs must be less than the
+    sum of the number of process and the number of resources. As an example,
+    if a process needs m resources, then there can only be 1 process as
+    $m + 1 > m$.
+
+    To prove the second condition, let's assume a system can have m + n
+    resource needs. As an example, let's use a system that has 5 processes
+    (n = 5) and 10 resources (m = 10). Then, $m + n = 15$. As a result, each process
+    needs 3 resources such that the sum of all maximum needs is 15. Since there
+    are only 10 resources, it's possible that all 5 processes accumulate those
+    10 resources without any of them being able to process any work. In other
+    words, a deadlock is possible.
+
+    In the previous example, all we'd have to do is reduce one of the process's
+    maximum need to 2, so the sum of all needs would be 14. Then, even if all
+    processes were one away from being able to run, there would still be a
+    resource left over for any of them to execute.
+
+\end{homeworkProblem}
+
+\end{document}
