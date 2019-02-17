@@ -229,21 +229,34 @@
     intersection of T1 and T2 would yield L1 and L2, but G1 and G2 wouldn't be
     equivalent. Is this possible?
 
-    Consider the following graphs containing three transactions, A, B, and C:
+    Consider the following graphs containing three transactions, A, B, and C.
+    Each graph contains a list of nodes followed by a list of nodes they point
+    to:
 
-    A: B, C
-    C: B
-
-    A: B, C
+    \begin{enumerate}
+      \item G1
+        \begin{enumerate}
+          \item A: B, C
+          \item C: B
+        \end{enumerate}
+      \item G2
+        \begin{enumerate}
+          \item A: B, C
+        \end{enumerate}
+    \end{enumerate}
 
     The first graph generates one possible topological sort:
 
-    A -> C -> B
+    \begin{enumerate}
+      \item A -> C -> B
+    \end{enumerate}
 
     The second graph generates two possible topological sort:
 
-    A -> C -> B
-    A -> B -> C
+    \begin{enumerate}
+      \item A -> C -> B
+      \item A -> B -> C
+    \end{enumerate}
 
     Notice how both graphs share one topological sort. Therefore, it's possible
     that two equivalent logs have two different serialization graphs.
