@@ -176,6 +176,14 @@
         hold true in Maekawa’s algorithm?
     }
 
+    In Lamport's algorithm, the critical section is accessed according to the
+    increasing order of timestamps due to the way request queues are handled.
+    Every time a process receives a request, the request is placed onto that
+    processes request queue in order of timestamp. These queues are synchronized
+    between every processes, so all processes are aware of the order. At any
+    given time, only the process with the smallest timestamp in the request
+    queue can access its critical section.
+
 \end{homeworkProblem}
 
 \pagebreak
