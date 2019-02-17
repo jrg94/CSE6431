@@ -253,8 +253,8 @@
     }
 
     To verify that a log of execution is serializable, we must constuct a
-    serialization graph using the condition that edge Ti → Tj then for some x
-    either ri[x] < wj[x] or wi[x] < rj[x] or wi[x] < wj[x].
+    serialization graph using the condition that edge Ti $\rightarrow$ Tj then
+    for some x either ri[x] < wj[x] or wi[x] < rj[x] or wi[x] < wj[x].
 
     From there, we need check that the graph has no cycles. To do so, we can use
     a depth first traversal to check if there are any back edges in the graph.
