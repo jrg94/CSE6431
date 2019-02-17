@@ -219,7 +219,7 @@
     words, two equivalent logs very well could have the same serialization
     graph. Whether or not they're guaranteed to have the same serialization
     graph is a tougher question to answer. To the best of my ability, I'm going
-    to argue no!
+    to argue yes!
 
     Given a log, L1, there is only one serialization graph, G1, the can be
     constructed, assuming L1 is serializable (containing no cycles). In order
@@ -229,37 +229,13 @@
     intersection of T1 and T2 would yield L1 and L2, but G1 and G2 wouldn't be
     equivalent. Is this possible?
 
-    Consider the following graphs containing three transactions, A, B, and C.
-    Each graph contains a list of nodes followed by a list of nodes they point
-    to:
-
-    \begin{enumerate}
-      \item G1
-        \begin{enumerate}
-          \item A: B, C
-          \item C: B
-        \end{enumerate}
-      \item G2
-        \begin{enumerate}
-          \item A: B, C
-        \end{enumerate}
-    \end{enumerate}
-
-    The first graph generates one possible topological sort:
-
-    \begin{enumerate}
-      \item A -> C -> B
-    \end{enumerate}
-
-    The second graph generates two possible topological sort:
-
-    \begin{enumerate}
-      \item A -> C -> B
-      \item A -> B -> C
-    \end{enumerate}
-
-    Notice how both graphs share one topological sort. Therefore, it's possible
-    that two equivalent logs have two different serialization graphs.
+    Unfortunately, it is not possible. In order to construct two graphs
+    that share a topological sort but are different, we'd have to have two logs
+    that are not equivalent which violates our assumption. In other words, we'd
+    have to construct two logs that have different operations in them such as
+    an extra write to incorporate an additional edge in the graph. The additional
+    edge could allow for overlapping sorts, but the original logs would no
+    longer be equivalent.
 
 \end{homeworkProblem}
 
@@ -275,6 +251,9 @@
         given partial order among the transactions. Describe a concise approach
         for verifying that the above two conditions are met by a log.
     }
+
+    To verify that a log of execution is serializable, we must constuct a
+    serialization graph and check that it has no cycles.
 
 \end{homeworkProblem}
 
