@@ -276,11 +276,31 @@
         that the system will be deadlock free if and only if R >= P(N-1) + 1.
     }
 
-    In English, there must be at least N number of maximum units of a resource
+    In English, there must be at least N number of units of a resource
     minus one used by P processes plus one to avoid a deadlock. After all, that
     makes sense. If each process can use at most N units of a resource, we'd
     need to have roughly that many resources times the number of processes
-    available, so no processes are ever waiting.  
+    available, so no processes are ever waiting. Or, more formally:
+
+    \begin{enumerate}
+      \item Let P be the number of processes a system has
+      \item Let R be the number of identical units of a reusable resource
+      \item Let N be the number of units of a resource that can be claimed by a
+      process
+      \item If a process needs at most N units of a resource to begin working,
+      then at any given time we would need to satisfy that condition for at least
+      one process. In other words, R has to be at least N. (base case)
+      \item To avoid deadlocks, however, we would need to assume that all
+      processes had consumed all remaining resources and needed just one unit
+      of a resource to move on. In other words, one process has N resources and
+      the remaining processes, (P-1), would have (N-1) resources.
+      \item Put into an equation, we could say: R >= N + (P-1)(N-1).
+      \item Distribute: R >= N + PN - P - N + 1
+      \item Remove N: R >= PN - P + 1
+      \item Factor P: R >= P(N-1) + 1
+    \end{enumerate}
+
+    In the end, we end up with the expected equation. 
 
 \end{homeworkProblem}
 
