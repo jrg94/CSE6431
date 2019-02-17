@@ -158,7 +158,7 @@
     This differs from Lamport's algorithm because replies are combined with
     releases. In Lamport's algorithm, replies grant access to the critical
     section based on each process's local queue. If the communication channels
-    are not FIFE, it's possible that the queues are not the same for all
+    are not FIFO, it's possible that the queues are not the same for all
     processes which means multiple processes can enter their critical section
     simultaneously. This is not a problem with the Ricart-Agrawala solution.
 
@@ -252,7 +252,7 @@
     serialization graph using the condition that edge Ti $\rightarrow$ Tj then
     for some x either ri[x] < wj[x] or wi[x] < rj[x] or wi[x] < wj[x].
 
-    From there, we need check that the graph has no cycles. To do so, we can use
+    From there, we need to check that the graph has no cycles. To do so, we can use
     a depth first traversal to check if there are any back edges in the graph.
 
     The partial order is then generated from a topological sort. Topological
@@ -269,7 +269,7 @@
     \textbf{
         Assume a system has P processes and R identical units of a reusable
         resource. If each process can claim at most N units of a resource, show
-        that the system will be deadlock free if and only if R >= P(N-1) + 1.
+        that the system will be deadlock free if and only if $R >= P(N-1) + 1$.
     }
 
     In English, there must be at least N number of units of a resource
@@ -290,10 +290,10 @@
       processes had consumed all remaining resources and needed just one unit
       of a resource to move on. In other words, one process has N resources and
       the remaining processes, (P-1), would have (N-1) resources.
-      \item Put into an equation, we could say: R >= N + (P-1)(N-1).
-      \item Distribute: R >= N + PN - P - N + 1
-      \item Remove N: R >= PN - P + 1
-      \item Factor P: R >= P(N-1) + 1
+      \item Put into an equation, we could say: $R >= N + (P-1)(N-1)$.
+      \item Distribute: $R >= N + PN - P - N + 1$
+      \item Remove N: $R >= PN - P + 1$
+      \item Factor P: $R >= P(N-1) + 1$
     \end{enumerate}
 
     In the end, we end up with the expected equation.
