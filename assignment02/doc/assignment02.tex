@@ -190,7 +190,8 @@
 
     \begin{enumerate}
       \item They're not making a request
-      \item They're making a request, but their timestamp is greater than an incoming request
+      \item They're making a request, but their timestamp is greater than an
+      incoming request
     \end{enumerate}
 
     The second condition guarantees that processes access their critical section
@@ -213,10 +214,31 @@
         yes, show your proof. Otherwise, give me a counter-example.
     }
 
-    Yes! The idea that two equivalent logs have the same serialization graph
+    Yes!
+
+    The idea that two equivalent logs have the same serialization graph
     comes from the idea that topological sorts of serialization graphs are
     not unique. In other words, there may be multiple ways to topologically sort
-    a serialization graph which can yield multiple equivalent logs.
+    a serialization graph which can yield multiple equivalent logs. To prove this,
+    you'd have to show that
+
+    Since a log
+    can only produce one serialization graph, two logs producing the same
+    serialization graph must be topological sorting permutations of the
+    same serialization graph.
+
+    Or, more formally by contradiction:
+
+    \begin{enumerate}
+      \item Assume two logs, L1 and L2, are equivalent
+      \item Assume two logs, L1 and L2, have different serialization graphs
+      \item This would mean that both sets of transactions see the same state of
+      the database and leave the database in the same final state, but their
+      serialization graphs differ
+      \item For that to be possible, there should be a way to construct the
+      exact same sets of topological sorts from the two different serialization
+      graphs
+    \end{enumerate}
 
 \end{homeworkProblem}
 
