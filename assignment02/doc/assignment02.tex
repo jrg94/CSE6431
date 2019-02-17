@@ -214,31 +214,39 @@
         yes, show your proof. Otherwise, give me a counter-example.
     }
 
-    Yes!
+    If a serialization graph has more than one topological sort, it's
+    possible to construct multiple equivalent logs from that graph. In other
+    words, two equivalent logs very well could have the same serialization
+    graph. Whether or not they're guaranteed to have the same serialization
+    graph is a tougher question to answer. To the best of my ability, I'm going
+    to argue no!
 
-    The idea that two equivalent logs have the same serialization graph
-    comes from the idea that topological sorts of serialization graphs are
-    not unique. In other words, there may be multiple ways to topologically sort
-    a serialization graph which can yield multiple equivalent logs. To prove this,
-    you'd have to show that
+    Given a log, L1, there is only one serialization graph, G1, the can be
+    constructed, assuming L1 is serializable (containing no cycles). In order
+    for two logs, L1 and L2, to construct two different serialization graphs, G1
+    and G2, but still be equivalent, their serialization graphs would have to
+    have overlapping topological sorting sets, T1 and T2. In other words, the
+    intersection of T1 and T2 would yield L1 and L2, but G1 and G2 wouldn't be
+    equivalent. Is this possible?
 
-    Since a log
-    can only produce one serialization graph, two logs producing the same
-    serialization graph must be topological sorting permutations of the
-    same serialization graph.
+    Consider the following graphs containing three transactions, A, B, and C:
 
-    Or, more formally by contradiction:
+    A: B, C
+    C: B
 
-    \begin{enumerate}
-      \item Assume two logs, L1 and L2, are equivalent
-      \item Assume two logs, L1 and L2, have different serialization graphs
-      \item This would mean that both sets of transactions see the same state of
-      the database and leave the database in the same final state, but their
-      serialization graphs differ
-      \item For that to be possible, there should be a way to construct the
-      exact same sets of topological sorts from the two different serialization
-      graphs
-    \end{enumerate}
+    A: B, C
+
+    The first graph generates one possible topological sort:
+
+    A -> C -> B
+
+    The second graph generates two possible topological sort:
+
+    A -> C -> B
+    A -> B -> C
+
+    Notice how both graphs share one topological sort. Therefore, it's possible
+    that two equivalent logs have two different serialization graphs.
 
 \end{homeworkProblem}
 
