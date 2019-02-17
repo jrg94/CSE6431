@@ -184,6 +184,18 @@
     given time, only the process with the smallest timestamp in the request
     queue can access its critical section.
 
+    In Ricart-Agrawala's algorithm, the critical section is accessed according
+    to the increasing order of timestamps due to the way replies are managed.
+    Processes only send replies under two conditions:
+
+    \begin{enumerate}
+      \item They're not making a request
+      \item They are making a request, but their timestamp is greater than an incoming request
+    \end{enumerate}
+
+    The second condition guarantees that processes access their critical section
+    in increasing order of timestamps.
+
 \end{homeworkProblem}
 
 \pagebreak
