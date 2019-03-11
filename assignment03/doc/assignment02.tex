@@ -170,11 +170,19 @@
         maintained.
     }
 
-    In terms of advantages, the new scheme is quite scalable. If you want a more
-    reliable system, you can increase the ratio of n to m. In other words, you
-    can allow for significantly more faults because you only need m copies of a
-    file to reconstruct that file. Meanwhile, you have to option to reduce the
-    ratio of n to m for the sake of speed. 
+    In terms of advantages, the new scheme is quite scalable. If we want a more
+    reliable system, we can increase the ratio of n to m. In other words, we
+    can allow for significantly more faults because we only need m copies of a
+    file to reconstruct that file. Meanwhile, we have to option to reduce the
+    ratio of n to m for the sake of speed. In other words, there are less sites
+    needed for data replication, so there are less read/write messages needed
+    overall. In addition, since we only need to acquire m chunks of data at any
+    given time, we can proceed once we receive those m chunks.
+
+    On the flip side, it's possible that we only grab m chunks of data and
+    reconstruct a corrupt file. Without proper corruption detection, there's no
+    way of confirming that our file is corrupt. In addition, file reconstruction
+    probably has some sort of overhead that the client has to worry about. 
 
 \end{homeworkProblem}
 
