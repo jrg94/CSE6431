@@ -178,8 +178,16 @@
 \begin{homeworkProblem}
 
     \textbf{
-        If two logs are equivalent, are their serialization graphs identical? If
-        yes, show your proof. Otherwise, give me a counter-example.
+        This question is about replication in distributed systems. We are given
+        a coding scheme, in which a file of size F is broken into n parts of size
+        F/m, such that any m of these parts are sufficient to reconstruct the
+        file. Here, n ≥ m. If we have n sites in a distributed system, we can
+        store each such part on each site. What potential advantages and
+        disadvantages does his scheme have, as compared to the normal
+        replication of files? Show how Gifford's voting algorithm needs to be
+        modified. Clearly state the constraints on read and write quorum that
+        are required. Give a brief argument as to how the correctness will be
+        maintained.
     }
 
 \end{homeworkProblem}
