@@ -145,9 +145,13 @@
 \begin{homeworkProblem}
 
     \textbf{
-        Lamport’s algorithm requires messages to be delivered in FIFO
-        order between every pair of sites. Does Ricart-Agrawala’s algorithm
-        require the same assumption to work? Explain your answer.
+        In the class, we discussed a voting mechanism for reading and writing
+        from replicated data. If R is  the number of messages exchanged for
+        reading and W is the number of messages exchanged for writing, then we
+        know that R + W is O(N), where N is the number of sites on which data is
+        replicated. Develop a scheme in which both read and write operations will
+        require O(sqrt(N)) messages. Include arguments on why you think it will
+        work correctly.
     }
 
 \end{homeworkProblem}
