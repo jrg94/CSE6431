@@ -159,13 +159,17 @@
 \begin{homeworkProblem}
 
     \textbf{
-        Show that in Lamport’s distributed mutual exclusion algorithm, the
-        critical section is accessed according to the increasing order
-        of timestamps. Then, show that the same property holds true in
-        Ricart-Agrawal’s distributed mutual exclusion algorithm. Does the same
-        hold true in Maekawa’s algorithm?
+        Show that when checkpoints are taken after every K (K > 1) messages are
+        sent, the recovery mechanism can suffer from the domino effect. Assume
+        that a process takes a checkpoint immediately after sending the Kth
+        message, but before doing anything else.
     }
 
+    As long as K > 1, the system can suffer the domino effect. Since there are
+    always messages sent between checkpoints, there is always an opportunity
+    where the recovery mechanism causes an orphan message. Orphan messages will
+    result in another recovery which could create another orphan message.
+    Naturally, the domino effect follows.
 
 \end{homeworkProblem}
 
