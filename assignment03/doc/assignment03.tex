@@ -193,16 +193,34 @@
     In terms of advantages, the new scheme is quite scalable. If we want a more
     reliable system, we can increase the ratio of n to m. In other words, we
     can allow for significantly more faults because we only need m copies of a
-    file to reconstruct that file. Meanwhile, we have to option to reduce the
-    ratio of n to m for the sake of speed. In other words, there are less sites
-    needed for data replication, so there are less read/write messages needed
-    overall. In addition, since we only need to acquire m chunks of data at any
-    given time, we can proceed once we receive those m chunks.
+    file to reconstruct that file.
+
+    Meanwhile, we have to option to reduce the ratio of n to m for the sake of
+    speed. In other words, there are less sites needed for data replication, so
+    there are less read/write messages needed overall. In addition, since we
+    only need to acquire m chunks of data at any given time, we can proceed once
+    we receive those m chunks.
 
     On the flip side, it's possible that we only grab m chunks of data and
     reconstruct a corrupt file. Without proper corruption detection, there's no
     way of confirming that our file is corrupt. In addition, file reconstruction
     probably has some sort of overhead that the client has to worry about.
+
+    In terms of Gifford's voting algorithm we can relax the following conditions:
+
+    \begin{itemize}
+      \item r + w > v
+      \item w > v/2
+    \end
+
+    Due to the reduction in information needed to reconstruct a file, we don't
+    need such strict requirements. We just need r + w > m and w > m/2 so that
+    the information needed for reconstruction can be obtained safely using
+    Gifford's voting algorithm.
+
+    We can verify that the new constraints are correct because it follows the
+    same logic that the original algorithm does. Here, we're assuming one site
+    gets one vote.
 
 \end{homeworkProblem}
 
