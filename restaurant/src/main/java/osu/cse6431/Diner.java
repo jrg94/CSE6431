@@ -2,7 +2,7 @@ package osu.cse6431;
 
 /**
  * A diner simulator.
- * 
+ *
  * @author Jeremy Grifski
  *
  */
@@ -16,7 +16,7 @@ public class Diner extends Thread {
 
     /**
      * Initializes a diner instance given four parameters.
-     * 
+     *
      * @param arrivalTime the arrival time of the diner
      * @param burgerOrderCount the number of burgers the diner orders
      * @param fryOrderCount the number of fries the diner orders
@@ -31,7 +31,7 @@ public class Diner extends Thread {
 
     /**
      * Initializes a diner instance given a list of parameters.
-     * 
+     *
      * @param diner a list of parameters
      */
     public Diner(int[] diner) {
@@ -117,6 +117,14 @@ public class Diner extends Thread {
         String output = "*********\nArrival Time: %d\nBurger Order Count: %d\nFry Order Count: %d\nSoda Order Count: %d";
         return String.format(output, this.getArrivalTime(), this.getBurgerOrderCount(), this.getFryOrderCount(),
                 this.getDrinkOrderCount());
+    }
+
+    public synchronized void sit() {
+        while (this.getResources().getAvailableTableCount() == 0) {
+            this.wait();
+        }
+        this.getResources().takeTable();
+        this.notifyAll();
     }
 
     @Override

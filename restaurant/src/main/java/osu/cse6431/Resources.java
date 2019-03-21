@@ -70,4 +70,8 @@ public class Resources {
         this.isSodaMachineAvailable = isSodaMachineAvailable;
     }
 
+    public void takeTable() {
+      this.setAvailableTableCount(this.getAvailableTableCount() - 1);
+    }
+
 }
