@@ -23,19 +23,26 @@ public class Restaurant {
         this.diners = diners;
     }
 
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
+    public static Restaurant load() {
         Scanner input = new Scanner(System.in);
         int numberOfDiners = Integer.parseInt(input.nextLine());
         int numberOfTables = Integer.parseInt(input.nextLine());
         int numberOfCooks = Integer.parseInt(input.nextLine());
+        ArrayList<Diner> diners = new ArrayList<Diner>();
         for (int i = 0; i < numberOfDiners; i++) {
             String diner = input.nextLine();
             int[] values = Arrays.stream(diner.split(" ")).mapToInt(Integer::parseInt).toArray();
         }
         input.close();
+        Restaurant ret = new Restaurant(numberOfTables, numberOfCooks, diners);
+        return ret;
+    }
+
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
+        Restaurant toRun = Restaurant.load();
     }
 
 }
