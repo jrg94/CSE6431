@@ -83,8 +83,12 @@ public class Resources {
     }
 
     public void takeTable(Diner activeDiner) {
-      this.setAvailableTableCount(this.getAvailableTableCount() - 1);
-      this.getActiveDiners().add(activeDiner);
+        this.setAvailableTableCount(this.getAvailableTableCount() - 1);
+        this.getActiveDiners().add(activeDiner);
+    }
+
+    public Diner takeOrder() {
+        this.getActiveDiners().remove(0);
     }
 
 }
