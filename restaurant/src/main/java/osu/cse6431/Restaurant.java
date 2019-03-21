@@ -17,12 +17,24 @@ public class Restaurant {
     private int numberOfTables;
     private int numberOfCooks;
 
+    /**
+     * A restaurant constructor.
+     * 
+     * @param numberOfTables the number of tables in the restaurant
+     * @param numberOfCooks the number of cooks in the restaurant
+     * @param diners a collection of diners
+     */
     public Restaurant(int numberOfTables, int numberOfCooks, ArrayList<Diner> diners) {
         this.numberOfCooks = numberOfCooks;
         this.numberOfTables = numberOfTables;
         this.diners = diners;
     }
 
+    /**
+     * Generates a restaurant from data given on standard input.
+     * 
+     * @return a new restaurant as specified by standard input
+     */
     public static Restaurant load() {
         Scanner input = new Scanner(System.in);
         int numberOfDiners = Integer.parseInt(input.nextLine());
@@ -40,7 +52,9 @@ public class Restaurant {
     }
 
     /**
-     * @param args
+     * Launches a restaurant instance.
+     * 
+     * @param args the input arguments
      */
     public static void main(String[] args) {
         Restaurant toRun = Restaurant.load();
