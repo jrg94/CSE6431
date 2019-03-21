@@ -9,7 +9,7 @@ public class DinnerTest {
     @Test
     public void testRun() {
         Diner diner = new Diner(0, 2, 1, 0);
-        diner.run();
+        //diner.run();
     }
 
 }

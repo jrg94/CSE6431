@@ -25,6 +25,18 @@ public class Cook extends Thread {
         return activeDiner;
     }
 
+    public synchronized void cookBurger(Diner order) {
+        if (order.getBurgerOrderCount() > 0) {
+            while (!this.getResources().isGrillAvailable()) {
+                /// wait
+            }
+        }
+    }
+
+    public void completeOrder() {
+        cookBurger();
+    }
+
     public void run() {
       System.out.println("Cook doing stuff");
       getOrder();
