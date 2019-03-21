@@ -12,7 +12,7 @@ public class ResourcesTest {
         Resources resources = new Resources(5, 100);
         Diner diner = new Diner(0, 2, 1, 1);
         resources.takeTable(diner);
-        assertEquals("Failed to take available table", 4, resources.getAvailableTableCount());
+        assertEquals("Failed to take available table", 1, resources.getTakenTableCount());
         assertEquals("Failed to add diner to list of active diners", diner, resources.getActiveDiners().get(0));
     }
 
@@ -22,7 +22,7 @@ public class ResourcesTest {
         Diner diner = new Diner(0, 2, 1, 1);
         resources.takeTable(diner);
         resources.freeTable();
-        assertEquals("Failed to free table for use", 5, resources.getAvailableTableCount());
+        assertEquals("Failed to free table for use", 0, resources.getTakenTableCount());
         assertEquals("Failed to increment total served count", 1, resources.getServedDinerCount());
     }
 

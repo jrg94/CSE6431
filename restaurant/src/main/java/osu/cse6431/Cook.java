@@ -41,7 +41,7 @@ public class Cook extends Thread {
             }
         }
         Diner activeDiner = this.getResources().takeOrder();
-        System.out.println("Took order for: \n" + activeDiner.toString());
+        System.out.println("Took order");
         this.notifyAll();
         return activeDiner;
     }
@@ -126,7 +126,6 @@ public class Cook extends Thread {
      */
     @Override
     public void run() {
-        System.out.println("Cook doing stuff");
         while (hasMoreDiners()) {
             Diner order = getOrder();
             completeOrder(order);
