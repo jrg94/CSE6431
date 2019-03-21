@@ -134,6 +134,7 @@ public class Diner extends Thread {
     @Override
     public void run() {
         System.out.println(this.toString());
+        sit();
     }
 
 }

@@ -12,7 +12,7 @@ public class Cook extends Thread {
         this.resources = resources;
     }
 
-    public synchronized void serve() {
+    public synchronized Diner getOrder() {
         while (this.getResources().getActiveDiners().size() == 0) {
             try {
                 this.wait();
@@ -20,10 +20,13 @@ public class Cook extends Thread {
                 System.err.println("Thread crashed");
             }
         }
+        Diner activeDiner = this.getResources().takeOrder();
         this.notifyAll();
+        return activeDiner;
     }
 
     public void run() {
       System.out.println("Cook doing stuff");
+      getOrder();
     }
 }
