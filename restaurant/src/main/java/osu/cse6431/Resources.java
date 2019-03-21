@@ -13,6 +13,7 @@ public class Resources {
         this.setGrillAvailable(true);
         this.setFryerAvailable(true);
         this.setSodaMachineAvailable(true);
+        this.setActiveDiners(new ArrayList<Diner>());
     }
 
     /**
@@ -69,6 +70,14 @@ public class Resources {
      */
     private void setSodaMachineAvailable(boolean isSodaMachineAvailable) {
         this.isSodaMachineAvailable = isSodaMachineAvailable;
+    }
+
+    public ArrayList<Diner> getActiveDiners() {
+        return this.activeDiners;
+    }
+
+    private ArrayList<Diner> setActiveDiners(ArrayList<Diner> activeDiners) {
+        this.activeDiners = activeDiners;
     }
 
     public void takeTable() {
