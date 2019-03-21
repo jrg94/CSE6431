@@ -6,7 +6,7 @@ package osu.cse6431;
  * @author Jeremy Grifski
  *
  */
-public class Diner {
+public class Diner extends Thread {
 
     private int arrivalTime; // 0 to 120
     private int burgerOrderCount; // > 1
@@ -94,6 +94,18 @@ public class Diner {
      */
     private void setDrinkOrderCount(int drinkOrderCount) {
         this.drinkOrderCount = drinkOrderCount;
+    }
+
+    @Override
+    public String toString() {
+        String output = "*********\nArrival Time: %d\nBurger Order Count: %d\nFry Order Count: %d\nSoda Order Count: %d";
+        return String.format(output, this.getArrivalTime(), this.getBurgerOrderCount(), this.getFryOrderCount(),
+                this.getDrinkOrderCount());
+    }
+
+    @Override
+    public void run() {
+        System.out.println(this.toString());
     }
 
 }
