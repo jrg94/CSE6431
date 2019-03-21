@@ -82,8 +82,9 @@ public class Resources {
         this.activeDiners = activeDiners;
     }
 
-    public void takeTable() {
+    public void takeTable(Diner activeDiner) {
       this.setAvailableTableCount(this.getAvailableTableCount() - 1);
+      this.getActiveDiners().add(activeDiner);
     }
 
 }

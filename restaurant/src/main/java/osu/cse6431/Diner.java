@@ -127,7 +127,7 @@ public class Diner extends Thread {
               System.err.println("Thread interrupted");
             }
         }
-        this.getResources().takeTable();
+        this.getResources().takeTable(this);
         this.notifyAll();
     }
 
