@@ -1,5 +1,7 @@
 package osu.cse6431;
 
+import java.util.ArrayList;
+
 public class Resources {
 
     private int availableTableCount;
