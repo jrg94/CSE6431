@@ -4,6 +4,5 @@
 *.fls
 *.log
 *.gz
-*.pdf
 
 _minted*/
