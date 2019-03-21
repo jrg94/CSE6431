@@ -32,6 +32,7 @@ public class Restaurant {
         for (int i = 0; i < numberOfDiners; i++) {
             String diner = input.nextLine();
             int[] values = Arrays.stream(diner.split(" ")).mapToInt(Integer::parseInt).toArray();
+            diners.add(new Diner(values));
         }
         input.close();
         Restaurant ret = new Restaurant(numberOfTables, numberOfCooks, diners);
