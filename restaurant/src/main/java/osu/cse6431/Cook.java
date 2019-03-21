@@ -41,6 +41,7 @@ public class Cook extends Thread {
             }
         }
         Diner activeDiner = this.getResources().takeOrder();
+        System.out.println("Took order for: \n" + activeDiner.toString());
         this.notifyAll();
         return activeDiner;
     }
@@ -56,6 +57,7 @@ public class Cook extends Thread {
                 System.err.println("Thread crashed while cooking burger.");
             }
         }
+        System.out.println("Cooking burger");
         this.notifyAll();
     }
 
@@ -115,13 +117,19 @@ public class Cook extends Thread {
         serveOrder();
     }
 
+    public synchronized boolean hasMoreDiners() {
+        return this.getResources().getServedDinerCount() != this.getResources().getTotalDinerCount();
+    }
+
     /**
      * Runs the thread.
      */
     @Override
     public void run() {
         System.out.println("Cook doing stuff");
-        Diner order = getOrder();
-        completeOrder(order);
+        while (hasMoreDiners()) {
+            Diner order = getOrder();
+            completeOrder(order);
+        }
     }
 }

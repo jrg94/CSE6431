@@ -148,7 +148,7 @@ public class Restaurant {
         Restaurant toRun = Restaurant.load(input);
         input.close();
 
-        Resources resources = new Resources(toRun.getNumberOfTables());
+        Resources resources = new Resources(toRun.getNumberOfTables(), toRun.getDiners().size());
         for (Diner diner : toRun.getDiners()) {
             diner.with(resources).start();
         }

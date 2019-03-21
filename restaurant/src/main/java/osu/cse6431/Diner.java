@@ -112,28 +112,36 @@ public class Diner extends Thread {
         return this;
     }
 
+    /**
+     * Converts the diner to a string.
+     * 
+     * @return the diner as a string
+     */
     @Override
     public String toString() {
-        String output = "*********\nArrival Time: %d\nBurger Order Count: %d\nFry Order Count: %d\nSoda Order Count: %d";
+        String output = "Arrival Time: %d\nBurger Order Count: %d\nFry Order Count: %d\nSoda Order Count: %d";
         return String.format(output, this.getArrivalTime(), this.getBurgerOrderCount(), this.getFryOrderCount(),
                 this.getDrinkOrderCount());
     }
 
+    /**
+     * Seats the diner when a table becomes available.
+     */
     public synchronized void sit() {
         while (this.getResources().getAvailableTableCount() == 0) {
             try {
-              this.wait();
+                this.wait();
             } catch (InterruptedException e) {
-              System.err.println("Thread interrupted");
+                System.err.println("Thread interrupted");
             }
         }
+        System.out.println("Diner seated");
         this.getResources().takeTable(this);
         this.notifyAll();
     }
 
     @Override
     public void run() {
-        System.out.println(this.toString());
         sit();
     }
 

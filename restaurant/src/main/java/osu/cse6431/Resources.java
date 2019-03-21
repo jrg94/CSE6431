@@ -9,9 +9,13 @@ public class Resources {
     private boolean isFryerAvailable;
     private boolean isSodaMachineAvailable;
     private ArrayList<Diner> activeDiners;
+    private int totalDinerCount;
+    private int servedDinerCount;
 
-    public Resources(int availableTableCount) {
+    public Resources(int availableTableCount, int totalDinerCount) {
         this.setAvailableTableCount(availableTableCount);
+        this.setTotalDinerCount(totalDinerCount);
+        this.setServedDinerCount(0);
         this.setGrillAvailable(true);
         this.setFryerAvailable(true);
         this.setSodaMachineAvailable(true);
@@ -87,11 +91,40 @@ public class Resources {
         this.getActiveDiners().add(activeDiner);
     }
 
+    /**
+     * @return the totalDinerCount
+     */
+    public int getTotalDinerCount() {
+        return totalDinerCount;
+    }
+
+    /**
+     * @param totalDinerCount the totalDinerCount to set
+     */
+    private void setTotalDinerCount(int totalDinerCount) {
+        this.totalDinerCount = totalDinerCount;
+    }
+
+    /**
+     * @return the servedDinerCount
+     */
+    public int getServedDinerCount() {
+        return servedDinerCount;
+    }
+
+    /**
+     * @param servedDinerCount the servedDinerCount to set
+     */
+    private void setServedDinerCount(int servedDinerCount) {
+        this.servedDinerCount = servedDinerCount;
+    }
+
     public Diner takeOrder() {
         return this.getActiveDiners().remove(0);
     }
 
     public void freeTable() {
         this.setAvailableTableCount(this.getAvailableTableCount() + 1);
+        this.setServedDinerCount(this.getServedDinerCount() + 1);
     }
 }
