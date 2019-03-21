@@ -90,6 +90,13 @@ public class Restaurant {
         this.cooks = cooks;
     }
 
+    /**
+     * A helper method for loading a list of diners from an input file.
+     * 
+     * @param input the Scanner stream
+     * @param numberOfDiners the number of diners
+     * @return a list of Diner objects
+     */
     private static ArrayList<Diner> loadDiners(Scanner input, int numberOfDiners) {
         ArrayList<Diner> diners = new ArrayList<Diner>();
         for (int i = 0; i < numberOfDiners; i++) {
@@ -100,6 +107,12 @@ public class Restaurant {
         return diners;
     }
 
+    /**
+     * A helper method for loading a list of cooks give a number of cooks.
+     * 
+     * @param numberOfCooks the number of cooks
+     * @return the list of cooks
+     */
     private static ArrayList<Cook> loadCooks(int numberOfCooks) {
         ArrayList<Cook> cooks = new ArrayList<Cook>();
         for (int i = 0; i < numberOfCooks; i++) {
@@ -111,6 +124,7 @@ public class Restaurant {
     /**
      * Generates a restaurant from data given on standard input.
      * 
+     * @param input the Scanner stream
      * @return a new restaurant as specified by standard input
      */
     public static Restaurant load(Scanner input) {
