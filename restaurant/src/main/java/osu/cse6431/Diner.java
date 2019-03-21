@@ -121,7 +121,11 @@ public class Diner extends Thread {
 
     public synchronized void sit() {
         while (this.getResources().getAvailableTableCount() == 0) {
-            this.wait();
+            try {
+              this.wait();
+            } catch (InterruptedException e) {
+              System.err.println("Thread interrupted");
+            }
         }
         this.getResources().takeTable();
         this.notifyAll();

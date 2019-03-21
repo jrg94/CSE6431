@@ -6,6 +6,7 @@ public class Resources {
     private boolean isGrillAvailable;
     private boolean isFryerAvailable;
     private boolean isSodaMachineAvailable;
+    private ArrayList<Diner> activeDiners;
 
     public Resources(int availableTableCount) {
         this.setAvailableTableCount(availableTableCount);
