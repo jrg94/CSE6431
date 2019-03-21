@@ -16,6 +16,7 @@ public class Restaurant {
     public static final int SODA_FILL_TIME = 1; // minutes
 
     private ArrayList<Diner> diners;
+    private ArrayList<Cook> cooks;
     private int numberOfTables;
     private int numberOfCooks;
 
@@ -26,10 +27,11 @@ public class Restaurant {
      * @param numberOfCooks the number of cooks in the restaurant
      * @param diners a collection of diners
      */
-    public Restaurant(int numberOfTables, int numberOfCooks, ArrayList<Diner> diners) {
+    public Restaurant(int numberOfTables, int numberOfCooks, ArrayList<Diner> diners, ArrayList<Cook> cooks) {
         this.setNumberOfCooks(numberOfCooks);
         this.setNumberOfTables(numberOfTables);
         this.setDiners(diners);
+        this.setCooks(cooks);
     }
 
     /**
@@ -75,23 +77,49 @@ public class Restaurant {
     }
 
     /**
-     * Generates a restaurant from data given on standard input.
-     * 
-     * @return a new restaurant as specified by standard input
+     * @return the cooks
      */
-    public static Restaurant load() {
-        Scanner input = new Scanner(System.in);
-        int numberOfDiners = Integer.parseInt(input.nextLine());
-        int numberOfTables = Integer.parseInt(input.nextLine());
-        int numberOfCooks = Integer.parseInt(input.nextLine());
+    public ArrayList<Cook> getCooks() {
+        return cooks;
+    }
+
+    /**
+     * @param cooks the cooks to set
+     */
+    private void setCooks(ArrayList<Cook> cooks) {
+        this.cooks = cooks;
+    }
+
+    private static ArrayList<Diner> loadDiners(Scanner input, int numberOfDiners) {
         ArrayList<Diner> diners = new ArrayList<Diner>();
         for (int i = 0; i < numberOfDiners; i++) {
             String diner = input.nextLine();
             int[] values = Arrays.stream(diner.split(" ")).mapToInt(Integer::parseInt).toArray();
             diners.add(new Diner(values));
         }
-        input.close();
-        Restaurant ret = new Restaurant(numberOfTables, numberOfCooks, diners);
+        return diners;
+    }
+
+    private static ArrayList<Cook> loadCooks(int numberOfCooks) {
+        ArrayList<Cook> cooks = new ArrayList<Cook>();
+        for (int i = 0; i < numberOfCooks; i++) {
+            cooks.add(new Cook());
+        }
+        return cooks;
+    }
+
+    /**
+     * Generates a restaurant from data given on standard input.
+     * 
+     * @return a new restaurant as specified by standard input
+     */
+    public static Restaurant load(Scanner input) {
+        int numberOfDiners = Integer.parseInt(input.nextLine());
+        int numberOfTables = Integer.parseInt(input.nextLine());
+        int numberOfCooks = Integer.parseInt(input.nextLine());
+        ArrayList<Diner> diners = loadDiners(input, numberOfDiners);
+        ArrayList<Cook> cooks = loadCooks(numberOfCooks);
+        Restaurant ret = new Restaurant(numberOfTables, numberOfCooks, diners, cooks);
         return ret;
     }
 
@@ -102,10 +130,17 @@ public class Restaurant {
      * @throws InterruptedException
      */
     public static void main(String[] args) throws InterruptedException {
-        Restaurant toRun = Restaurant.load();
+        Scanner input = new Scanner(System.in);
+        Restaurant toRun = Restaurant.load(input);
+        input.close();
+
         Resources resources = new Resources(toRun.getNumberOfTables());
         for (Diner diner : toRun.getDiners()) {
             diner.with(resources).start();
+        }
+
+        for (Cook cook : toRun.getCooks()) {
+            cook.with(resources).start();
         }
     }
 

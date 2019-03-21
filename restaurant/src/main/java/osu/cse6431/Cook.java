@@ -5,11 +5,12 @@ public class Cook extends Thread {
     private Resources resources;
 
     public Resources getResources() {
-      return this.resources;
+        return this.resources;
     }
 
-    public void with(Resources resources) {
+    public Cook with(Resources resources) {
         this.resources = resources;
+        return this;
     }
 
     public synchronized Diner getOrder() {
@@ -37,7 +38,7 @@ public class Cook extends Thread {
     }
 
     public synchronized void cookFries() {
-        while(!this.getResources().isFryerAvailable()) {
+        while (!this.getResources().isFryerAvailable()) {
             try {
                 this.wait();
             } catch (InterruptedException e) {
