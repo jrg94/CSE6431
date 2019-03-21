@@ -134,6 +134,15 @@
         work correctly.
     }
 
+    In order to accomplish O(sqrt(N)), we need to be able to accomplish reads
+    and writes without sending anymore than sqrt(N) messages. To do this, we
+    need to divide the nodes into pools such that there are sqrt(N) pools. For
+    example, if there are 9 nodes, we'd need to form 3 pools of 3 nodes. For
+    writes, we only need to check in with one node in each pool. That way, every
+    pool has the lastest copy of data. Then, reads only have to check in with
+    their local pool since they're guaranteed to have one copy of the latest
+    written data. 
+
 \end{homeworkProblem}
 
 \begin{homeworkProblem}
@@ -182,7 +191,7 @@
     On the flip side, it's possible that we only grab m chunks of data and
     reconstruct a corrupt file. Without proper corruption detection, there's no
     way of confirming that our file is corrupt. In addition, file reconstruction
-    probably has some sort of overhead that the client has to worry about. 
+    probably has some sort of overhead that the client has to worry about.
 
 \end{homeworkProblem}
 
