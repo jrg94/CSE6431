@@ -91,4 +91,7 @@ public class Resources {
         return this.getActiveDiners().remove(0);
     }
 
+    public Diner freeTable() {
+        this.setAvailableTableCount(this.getAvailableTableCount() + 1);
+    }
 }

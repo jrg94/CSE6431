@@ -56,6 +56,10 @@ public class Cook extends Thread {
         }
     }
 
+    public synchronized void serveOrder() {
+        this.getResources().freeTable();
+    }
+
     public void completeOrder(Diner order) {
         for (int i = 0; i < order.getBurgerOrderCount(); i++) {
             cookBurger();
@@ -68,6 +72,8 @@ public class Cook extends Thread {
         for (int i = 0; i < order.getDrinkOrderCount(); i++) {
             pourSoda();
         }
+
+        serveOrder();
     }
 
     public void run() {
