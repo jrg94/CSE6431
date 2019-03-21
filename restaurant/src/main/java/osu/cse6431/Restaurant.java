@@ -35,7 +35,7 @@ public class Restaurant {
     /**
      * @return the diners
      */
-    private ArrayList<Diner> getDiners() {
+    public ArrayList<Diner> getDiners() {
         return diners;
     }
 
@@ -49,7 +49,7 @@ public class Restaurant {
     /**
      * @return the numberOfTables
      */
-    private int getNumberOfTables() {
+    public int getNumberOfTables() {
         return numberOfTables;
     }
 
@@ -63,7 +63,7 @@ public class Restaurant {
     /**
      * @return the numberOfCooks
      */
-    private int getNumberOfCooks() {
+    public int getNumberOfCooks() {
         return numberOfCooks;
     }
 
