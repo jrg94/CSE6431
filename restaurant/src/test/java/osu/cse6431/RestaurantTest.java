@@ -28,6 +28,12 @@ public class RestaurantTest {
         setInputStream("test_001.txt");
         Restaurant test = Restaurant.load();
         assertEquals(3, test.getDiners().size());
+        assertEquals(5, test.getNumberOfTables());
+        assertEquals(1, test.getNumberOfCooks());
+        assertEquals(0, test.getDiners().get(0).getArrivalTime());
+        assertEquals(2, test.getDiners().get(0).getBurgerOrderCount());
+        assertEquals(1, test.getDiners().get(0).getFryOrderCount());
+        assertEquals(0, test.getDiners().get(0).getDrinkOrderCount());
     }
 
 }
