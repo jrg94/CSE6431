@@ -1,4 +1,4 @@
-package restaurant;
+package osu.cse6431;
 
 import org.junit.Test;
 
