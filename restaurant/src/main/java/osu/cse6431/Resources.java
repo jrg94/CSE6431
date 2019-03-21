@@ -1,13 +1,14 @@
 package osu.cse6431;
 
-import java.util.ArrayList;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
 
 public class Resources {
 
     private boolean isGrillAvailable;
     private boolean isFryerAvailable;
     private boolean isSodaMachineAvailable;
-    private ArrayList<Diner> activeDiners;
+    private BlockingQueue<Diner> activeDiners;
     private int totalDinerCount;
     private int servedDinerCount;
     private int totalTableCount;
@@ -27,7 +28,7 @@ public class Resources {
         this.setGrillAvailable(true);
         this.setFryerAvailable(true);
         this.setSodaMachineAvailable(true);
-        this.setActiveDiners(new ArrayList<Diner>());
+        this.setActiveDiners(new LinkedBlockingDeque<Diner>(this.getTotalTableCount()));
     }
 
     /**
@@ -103,14 +104,14 @@ public class Resources {
     /**
      * @return the list of active diners
      */
-    public ArrayList<Diner> getActiveDiners() {
+    public BlockingQueue<Diner> getActiveDiners() {
         return this.activeDiners;
     }
 
     /**
      * @param activeDiners the activeDiners to set
      */
-    private void setActiveDiners(ArrayList<Diner> activeDiners) {
+    private void setActiveDiners(LinkedBlockingDeque<Diner> activeDiners) {
         this.activeDiners = activeDiners;
     }
 
@@ -148,7 +149,12 @@ public class Resources {
      * @return the latest diner
      */
     public Diner takeOrder() {
-        return this.getActiveDiners().remove(0);
+        try {
+            return this.getActiveDiners().take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -166,6 +172,10 @@ public class Resources {
      */
     public void takeTable(Diner activeDiner) {
         this.setTakenTableCount(this.getTakenTableCount() + 1);
-        this.getActiveDiners().add(activeDiner);
+        try {
+            this.getActiveDiners().put(activeDiner);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

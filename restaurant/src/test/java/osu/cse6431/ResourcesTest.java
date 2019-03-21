@@ -8,12 +8,12 @@ import org.junit.Test;
 public class ResourcesTest {
 
     @Test
-    public void testTakeTable() {
+    public void testTakeTable() throws InterruptedException {
         Resources resources = new Resources(5, 100);
         Diner diner = new Diner(0, 2, 1, 1);
         resources.takeTable(diner);
         assertEquals("Failed to take available table", 1, resources.getTakenTableCount());
-        assertEquals("Failed to add diner to list of active diners", diner, resources.getActiveDiners().get(0));
+        assertEquals("Failed to add diner to list of active diners", diner, resources.getActiveDiners().take());
     }
 
     @Test

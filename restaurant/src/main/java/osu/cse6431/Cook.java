@@ -33,16 +33,7 @@ public class Cook extends Thread {
      * @return the diner whose order we're taking
      */
     public synchronized Diner getOrder() {
-        while (this.getResources().getActiveDiners().size() == 0) {
-            try {
-                this.wait();
-            } catch (InterruptedException e) {
-                System.err.println("Thread crashed");
-            }
-        }
         Diner activeDiner = this.getResources().takeOrder();
-        System.out.println("Took order");
-        this.notifyAll();
         return activeDiner;
     }
 
@@ -50,43 +41,21 @@ public class Cook extends Thread {
      * Cooks a burger when the grill becomes available.
      */
     public synchronized void cookBurger() {
-        while (!this.getResources().isGrillAvailable()) {
-            try {
-                this.wait();
-            } catch (InterruptedException e) {
-                System.err.println("Thread crashed while cooking burger.");
-            }
-        }
         System.out.println("Cooking burger");
-        this.notifyAll();
     }
 
     /**
      * Cooks fries when the fryer becomes available.
      */
     public synchronized void cookFries() {
-        while (!this.getResources().isFryerAvailable()) {
-            try {
-                this.wait();
-            } catch (InterruptedException e) {
-                System.err.println("Thread crashed while cooking fries");
-            }
-        }
-        this.notifyAll();
+        System.out.println("Cooking fries");
     }
 
     /**
      * Pours soda when the soda machine becomes available.
      */
     public synchronized void pourSoda() {
-        while (!this.getResources().isSodaMachineAvailable()) {
-            try {
-                this.wait();
-            } catch (InterruptedException e) {
-                System.out.println("Thread crashed while pouring soda");
-            }
-        }
-        this.notifyAll();
+        System.out.println("Pouring soda");
     }
 
     /**
@@ -117,6 +86,11 @@ public class Cook extends Thread {
         serveOrder();
     }
 
+    /**
+     * A helper method for detecting if there are more diners to cook for.
+     * 
+     * @return true if there are more diners
+     */
     public synchronized boolean hasMoreDiners() {
         return this.getResources().getServedDinerCount() != this.getResources().getTotalDinerCount();
     }
