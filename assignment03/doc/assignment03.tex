@@ -126,17 +126,17 @@
 
     \textbf{
         In the class, we discussed a voting mechanism for reading and writing
-        from replicated data. If R is the number of messages exchanged for
-        reading and W is the number of messages exchanged for writing, then we
-        know that R + W is O(N), where N is the number of sites on which data is
+        from replicated data. If $R$ is the number of messages exchanged for
+        reading and $W$ is the number of messages exchanged for writing, then we
+        know that $R + W$ is $O(N)$, where N is the number of sites on which data is
         replicated. Develop a scheme in which both read and write operations will
-        require O(sqrt(N)) messages. Include arguments on why you think it will
+        require $O(sqrt(N))$ messages. Include arguments on why you think it will
         work correctly.
     }
 
-    In order to accomplish O(sqrt(N)), we need to be able to accomplish reads
-    and writes without sending anymore than sqrt(N) messages. To do this, we
-    need to divide the nodes into pools such that there are sqrt(N) pools. For
+    In order to accomplish $O(sqrt(N))$, we need to be able to accomplish reads
+    and writes without sending anymore than $sqrt(N)$ messages. To do this, we
+    need to divide the nodes into pools such that there are $sqrt(N)$ pools. For
     example, if there are 9 nodes, we'd need to form 3 pools of 3 nodes. For
     writes, we only need to check in with one node in each pool. That way, every
     pool has the lastest copy of data. Then, reads only have to check in with
@@ -156,16 +156,18 @@
 
 \end{homeworkProblem}
 
+\pagebreak
+
 \begin{homeworkProblem}
 
     \textbf{
-        Show that when checkpoints are taken after every K (K > 1) messages are
+        Show that when checkpoints are taken after every $K (K > 1)$ messages are
         sent, the recovery mechanism can suffer from the domino effect. Assume
         that a process takes a checkpoint immediately after sending the Kth
         message, but before doing anything else.
     }
 
-    As long as K > 1, the system can suffer the domino effect. Since there are
+    As long as $K > 1$, the system can suffer the domino effect. Since there are
     always messages sent between checkpoints, there is always an opportunity
     where the recovery mechanism causes an orphan message. Orphan messages will
     result in another recovery which could create another orphan message.
@@ -179,9 +181,9 @@
 
     \textbf{
         This question is about replication in distributed systems. We are given
-        a coding scheme, in which a file of size F is broken into n parts of size
-        F/m, such that any m of these parts are sufficient to reconstruct the
-        file. Here, n ≥ m. If we have n sites in a distributed system, we can
+        a coding scheme, in which a file of size $F$ is broken into n parts of size
+        $F/m$, such that any $m$ of these parts are sufficient to reconstruct the
+        file. Here, $n >= m$. If we have n sites in a distributed system, we can
         store each such part on each site. What potential advantages and
         disadvantages does his scheme have, as compared to the normal
         replication of files? Show how Gifford's voting algorithm needs to be
@@ -191,15 +193,15 @@
     }
 
     In terms of advantages, the new scheme is quite scalable. If we want a more
-    reliable system, we can increase the ratio of n to m. In other words, we
-    can allow for significantly more faults because we only need m copies of a
+    reliable system, we can increase the ratio of $n$ to $m$. In other words, we
+    can allow for significantly more faults because we only need $m$ copies of a
     file to reconstruct that file.
 
-    Meanwhile, we have to option to reduce the ratio of n to m for the sake of
+    Meanwhile, we have to option to reduce the ratio of $n$ to $m$ for the sake of
     speed. In other words, there are less sites needed for data replication, so
     there are less read/write messages needed overall. In addition, since we
-    only need to acquire m chunks of data at any given time, we can proceed once
-    we receive those m chunks.
+    only need to acquire $m$ chunks of data at any given time, we can proceed once
+    we receive those $m$ chunks.
 
     On the flip side, it's possible that we only grab m chunks of data and
     reconstruct a corrupt file. Without proper corruption detection, there's no
@@ -209,12 +211,12 @@
     In terms of Gifford's voting algorithm we can relax the following conditions:
 
     \begin{itemize}
-      \item r + w > v
-      \item w > v/2
-    \end
+      \item $r + w > v$
+      \item $w > v/2$
+    \end{itemize}
 
     Due to the reduction in information needed to reconstruct a file, we don't
-    need such strict requirements. We just need r + w > m and w > m/2 so that
+    need such strict requirements. We just need $r + w > m$ and $w > m/2$ so that
     the information needed for reconstruction can be obtained safely using
     Gifford's voting algorithm.
 
