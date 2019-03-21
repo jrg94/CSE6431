@@ -12,6 +12,7 @@ public class Diner extends Thread {
     private int burgerOrderCount; // > 1
     private int fryOrderCount; // > 0
     private int drinkOrderCount; // 0 or 1
+    private Resources resources;
 
     /**
      * Initializes a diner instance given four parameters.
@@ -94,6 +95,21 @@ public class Diner extends Thread {
      */
     private void setDrinkOrderCount(int drinkOrderCount) {
         this.drinkOrderCount = drinkOrderCount;
+    }
+
+    /**
+     * @return the resources
+     */
+    public Resources getResources() {
+        return resources;
+    }
+
+    /**
+     * @param resources the resources to set
+     */
+    public Diner with(Resources resources) {
+        this.resources = resources;
+        return this;
     }
 
     @Override

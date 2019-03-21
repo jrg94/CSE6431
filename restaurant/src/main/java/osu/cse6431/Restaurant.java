@@ -99,8 +99,14 @@ public class Restaurant {
      * Launches a restaurant instance.
      * 
      * @param args the input arguments
+     * @throws InterruptedException
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Restaurant toRun = Restaurant.load();
+        Resources resources = new Resources(toRun.getNumberOfTables());
+        for (Diner diner : toRun.getDiners()) {
+            diner.with(resources).start();
+        }
     }
+
 }
