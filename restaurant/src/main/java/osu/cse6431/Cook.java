@@ -39,7 +39,7 @@ public class Cook extends Thread {
     public synchronized void cookFries() {
         while(!this.getResources().isFryerAvailable()) {
             try {
-                this.wait()
+                this.wait();
             } catch (InterruptedException e) {
                 System.err.println("Thread crashed while cooking fries");
             }
@@ -48,7 +48,11 @@ public class Cook extends Thread {
 
     public synchronized void pourSoda() {
         while (!this.getResources().isSodaMachineAvailable()) {
-            // wait
+            try {
+                this.wait();
+            } catch (InterruptedException e) {
+                System.out.println("Thread crashed while pouring soda");
+            }
         }
     }
 
