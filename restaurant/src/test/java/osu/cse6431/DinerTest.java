@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import osu.cse6431.Diner;
 
-public class DinnerTest {
+public class DinerTest {
 
     @Test
     public void testRun() {
