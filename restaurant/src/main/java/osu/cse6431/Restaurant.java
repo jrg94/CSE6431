@@ -1,6 +1,3 @@
-/**
- * 
- */
 package osu.cse6431;
 
 import java.util.ArrayList;
@@ -8,8 +5,9 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 /**
+ * A restaurant simulator.
+ * 
  * @author Jeremy Grifski
- *
  */
 public class Restaurant {
 
@@ -18,7 +16,7 @@ public class Restaurant {
     private int numberOfCooks;
 
     /**
-     * A restaurant constructor.
+     * Initializes a restaurant given three parameters.
      * 
      * @param numberOfTables the number of tables in the restaurant
      * @param numberOfCooks the number of cooks in the restaurant

@@ -1,5 +1,11 @@
 package osu.cse6431;
 
+/**
+ * A diner simulator.
+ * 
+ * @author Jeremy Grifski
+ *
+ */
 public class Diner {
 
     private int arrivalTime; // 0 to 120
@@ -7,18 +13,87 @@ public class Diner {
     private int fryOrderCount; // > 0
     private int drinkOrderCount; // 0 or 1
 
+    /**
+     * Initializes a diner instance given four parameters.
+     * 
+     * @param arrivalTime the arrival time of the diner
+     * @param burgerOrderCount the number of burgers the diner orders
+     * @param fryOrderCount the number of fries the diner orders
+     * @param drinkOrderCount the number of drinks the diner orders
+     */
     public Diner(int arrivalTime, int burgerOrderCount, int fryOrderCount, int drinkOrderCount) {
-        this.arrivalTime = arrivalTime;
-        this.burgerOrderCount = burgerOrderCount;
-        this.fryOrderCount = fryOrderCount;
-        this.drinkOrderCount = drinkOrderCount;
+        this.setArrivalTime(arrivalTime);
+        this.setBurgerOrderCount(burgerOrderCount);
+        this.setFryOrderCount(fryOrderCount);
+        this.setDrinkOrderCount(drinkOrderCount);
     }
 
+    /**
+     * Initializes a diner instance given a list of parameters.
+     * 
+     * @param diner a list of parameters
+     */
     public Diner(int[] diner) {
-        this.arrivalTime = diner[0];
-        this.burgerOrderCount = diner[1];
-        this.burgerOrderCount = diner[2];
-        this.burgerOrderCount = diner[3];
+        this.setArrivalTime(diner[0]);
+        this.setBurgerOrderCount(diner[1]);
+        this.setBurgerOrderCount(diner[2]);
+        this.setBurgerOrderCount(diner[3]);
+    }
+
+    /**
+     * @return the arrivalTime
+     */
+    public int getArrivalTime() {
+        return arrivalTime;
+    }
+
+    /**
+     * @param arrivalTime the arrivalTime to set
+     */
+    private void setArrivalTime(int arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+
+    /**
+     * @return the burgerOrderCount
+     */
+    public int getBurgerOrderCount() {
+        return burgerOrderCount;
+    }
+
+    /**
+     * @param burgerOrderCount the burgerOrderCount to set
+     */
+    private void setBurgerOrderCount(int burgerOrderCount) {
+        this.burgerOrderCount = burgerOrderCount;
+    }
+
+    /**
+     * @return the fryOrderCount
+     */
+    public int getFryOrderCount() {
+        return fryOrderCount;
+    }
+
+    /**
+     * @param fryOrderCount the fryOrderCount to set
+     */
+    private void setFryOrderCount(int fryOrderCount) {
+        this.fryOrderCount = fryOrderCount;
+    }
+
+    /**
+     * @return the drinkOrderCount
+     */
+    public int getDrinkOrderCount() {
+        return drinkOrderCount;
+    }
+
+    /**
+     * @param drinkOrderCount the drinkOrderCount to set
+     */
+    private void setDrinkOrderCount(int drinkOrderCount) {
+        this.drinkOrderCount = drinkOrderCount;
     }
 
 }
