@@ -3,6 +3,7 @@
  */
 package osu.cse6431;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -11,6 +12,16 @@ import java.util.Scanner;
  *
  */
 public class Restaurant {
+
+    private ArrayList<Diner> diners;
+    private int numberOfTables;
+    private int numberOfCooks;
+
+    public Restaurant(int numberOfTables, int numberOfCooks, ArrayList<Diner> diners) {
+        this.numberOfCooks = numberOfCooks;
+        this.numberOfTables = numberOfTables;
+        this.diners = diners;
+    }
 
     /**
      * @param args
