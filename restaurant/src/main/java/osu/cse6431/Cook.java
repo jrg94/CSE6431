@@ -33,12 +33,13 @@ public class Cook extends Thread {
         }
     }
 
-    public void completeOrder() {
-        cookBurger();
+    public void completeOrder(Diner order) {
+        cookBurger(order);
     }
 
     public void run() {
       System.out.println("Cook doing stuff");
-      getOrder();
+      Diner order = getOrder();
+      completeOrder(order);
     }
 }
