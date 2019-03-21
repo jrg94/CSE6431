@@ -36,8 +36,8 @@ public class Diner extends Thread {
     public Diner(int[] diner) {
         this.setArrivalTime(diner[0]);
         this.setBurgerOrderCount(diner[1]);
-        this.setBurgerOrderCount(diner[2]);
-        this.setBurgerOrderCount(diner[3]);
+        this.setFryOrderCount(diner[2]);
+        this.setDrinkOrderCount(diner[3]);
     }
 
     /**
