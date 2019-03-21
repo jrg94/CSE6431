@@ -27,13 +27,22 @@ public class Cook extends Thread {
 
     public synchronized void cookBurger() {
         while (!this.getResources().isGrillAvailable()) {
-            /// wait
+            try {
+                this.wait();
+            } catch (InterruptedException e) {
+                System.err.println("Thread crashed while cooking burger.");
+            }
         }
+        this.notifyAll();
     }
 
-    public synchonized void cookFries() {
+    public synchronized void cookFries() {
         while(!this.getResources().isFryerAvailable()) {
-            // wait
+            try {
+                this.wait()
+            } catch (InterruptedException e) {
+                System.err.println("Thread crashed while cooking fries");
+            }
         }
     }
 
