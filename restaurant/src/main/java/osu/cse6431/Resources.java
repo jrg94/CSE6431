@@ -86,11 +86,6 @@ public class Resources {
         this.activeDiners = activeDiners;
     }
 
-    public void takeTable(Diner activeDiner) {
-        this.setAvailableTableCount(this.getAvailableTableCount() - 1);
-        this.getActiveDiners().add(activeDiner);
-    }
-
     /**
      * @return the totalDinerCount
      */
@@ -119,12 +114,30 @@ public class Resources {
         this.servedDinerCount = servedDinerCount;
     }
 
+    /**
+     * Takes the latest diner off the active diner list.
+     * 
+     * @return the latest diner
+     */
     public Diner takeOrder() {
         return this.getActiveDiners().remove(0);
     }
 
+    /**
+     * Frees up a table for new diners and increases the served diner count.
+     */
     public void freeTable() {
         this.setAvailableTableCount(this.getAvailableTableCount() + 1);
         this.setServedDinerCount(this.getServedDinerCount() + 1);
+    }
+
+    /**
+     * Takes a table and adds the diner that took it to the active diners lists.
+     * 
+     * @param activeDiner the diner taking the table
+     */
+    public void takeTable(Diner activeDiner) {
+        this.setAvailableTableCount(this.getAvailableTableCount() - 1);
+        this.getActiveDiners().add(activeDiner);
     }
 }
