@@ -78,7 +78,7 @@ public class Resources {
         return this.activeDiners;
     }
 
-    private ArrayList<Diner> setActiveDiners(ArrayList<Diner> activeDiners) {
+    private void setActiveDiners(ArrayList<Diner> activeDiners) {
         this.activeDiners = activeDiners;
     }
 
