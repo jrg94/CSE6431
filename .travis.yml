@@ -1,35 +1,35 @@
-language: generic
+matrix:
+  - language: generic
+    before_install:
+      - sudo apt-get install python-pygments
+    install:
+      - source ./texlive/texlive_install.sh
+    cache:
+      directories:
+        - /tmp/texlive
+        - $HOME/.texlive
+    before_script: cd $TRAVIS_BUILD_DIR
+    script:
+      - pdflatex --shell-escape ./assignment01/doc/assignment01.tex
+      - pdflatex --shell-escape ./assignment02/doc/assignment02.tex
+      - pdflatex --shell-escape ./assignment03/doc/assignment03.tex
+    deploy:
+      provider: releases
+      api_key:
+        secure: ${GITHUB_TOKEN}
+      file:
+        - ./assignment01.pdf
+        - ./assignment02.pdf
+        - ./assignment03.pdf
+      skip_cleanup: true
+      on:
+        tags: true
+        branch: master
+  - language: java
+    jdk:
+      - oraclejdk8
+    script:
+      - mvn clean install
 
-before_install:
-  - sudo apt-get install python-pygments
-
-install:
-  - source ./texlive/texlive_install.sh
-
-cache:
-  directories:
-    - /tmp/texlive
-    - $HOME/.texlive
-
-before_script: cd $TRAVIS_BUILD_DIR
-
-script:
-  - pdflatex --shell-escape ./assignment01/doc/assignment01.tex
-  - pdflatex --shell-escape ./assignment02/doc/assignment02.tex
-  - pdflatex --shell-escape ./assignment03/doc/assignment03.tex
-
-deploy:
-  provider: releases
-  api_key:
-    secure: ${GITHUB_TOKEN}
-  file:
-    - ./assignment01.pdf
-    - ./assignment02.pdf
-    - ./assignment03.pdf
-  skip_cleanup: true
-  on:
-    tags: true
-    branch: master
-
-notifications:
-  email: false
+  notifications:
+    email: false
