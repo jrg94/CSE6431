@@ -88,7 +88,7 @@ public class Resources {
     }
 
     public Diner takeOrder() {
-        this.getActiveDiners().remove(0);
+        return this.getActiveDiners().remove(0);
     }
 
 }
