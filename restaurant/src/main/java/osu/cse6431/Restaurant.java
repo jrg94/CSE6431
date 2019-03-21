@@ -23,9 +23,51 @@ public class Restaurant {
      * @param diners a collection of diners
      */
     public Restaurant(int numberOfTables, int numberOfCooks, ArrayList<Diner> diners) {
-        this.numberOfCooks = numberOfCooks;
-        this.numberOfTables = numberOfTables;
+        this.setNumberOfCooks(numberOfCooks);
+        this.setNumberOfTables(numberOfTables);
+        this.setDiners(diners);
+    }
+
+    /**
+     * @return the diners
+     */
+    private ArrayList<Diner> getDiners() {
+        return diners;
+    }
+
+    /**
+     * @param diners the diners to set
+     */
+    private void setDiners(ArrayList<Diner> diners) {
         this.diners = diners;
+    }
+
+    /**
+     * @return the numberOfTables
+     */
+    private int getNumberOfTables() {
+        return numberOfTables;
+    }
+
+    /**
+     * @param numberOfTables the numberOfTables to set
+     */
+    private void setNumberOfTables(int numberOfTables) {
+        this.numberOfTables = numberOfTables;
+    }
+
+    /**
+     * @return the numberOfCooks
+     */
+    private int getNumberOfCooks() {
+        return numberOfCooks;
+    }
+
+    /**
+     * @param numberOfCooks the numberOfCooks to set
+     */
+    private void setNumberOfCooks(int numberOfCooks) {
+        this.numberOfCooks = numberOfCooks;
     }
 
     /**
@@ -57,5 +99,4 @@ public class Restaurant {
     public static void main(String[] args) {
         Restaurant toRun = Restaurant.load();
     }
-
 }
