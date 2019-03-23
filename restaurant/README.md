@@ -1,5 +1,10 @@
 # Restaurant Project
 
+Welcome to the restaurant project. To learn more, browse the
+sections below.
+
+## Execution
+
 ## Input
 
 Input is expected as an input stream on stdin. Input is expected
@@ -20,7 +25,7 @@ time burgerCount fryCount sodaCount
 
 In other words, the program expects each item to be
 separated by a single space. The program cannot handle
-malformed input.
+malformed input. Also, all values are expected as integers.
 
 ## Output
 
@@ -61,3 +66,38 @@ For example, when diners arrive, the log will indicate the diner's
 ID (an index) and what table they were seated at. Likewise, cooks
 are also indicated by an ID (an index), and their interaction with
 the diners and their orders can be found in the log.
+
+## Description
+
+The program works by breaking functionality into four classes: Restaurant,
+Cook, Diner, and Resources. 
+
+The Restaurant class serves as the main thread which launches the simulation. 
+It is also responsible for maintaining the global clock.
+
+The Diner class serves as a diner thread. Each diner thread waits until the
+global clock matches their arrival time before adding themselves to the table
+queue. If there are any waiting cooks, they're popped of the queue and seated.
+Seated diners then wait for their order to be filled by periodically checking
+if they have food. If they do, they begin the process of eating which is
+another process that periodically checks the global clock to see if 30 minutes
+have passed. If 30 minutes have passed, the diner then leaves. 
+
+The Cook class serves as a cook thread. Each cook thread waits for a diner to
+come across the table queue. Once one becomes available, they seat the diner,
+take their order, and begin preparation. Preparation begins by polling the
+grill for as many burgers as need to be cooked. Then, the same is done for 
+the fryer as well as the soda machine, in that order. After completing the
+order, the cook indicates to the diner that their food is ready before
+taking another order.
+
+## Opportunities for Improvements
+
+The biggest area for improvement is kitchen resource usage among cooks.
+Currently, the kitchen is setup such that cooks try to prepare burgers, fries,
+and soda in that order. Because of this order, it's possible that three cooks 
+could be waiting for the grill while both the fryer and the soda machine are 
+open. The cooks are not smart enough to try to acquire any of the three machines. 
+Introducing locks may allow cooks to accomplish better performance. Also, due 
+to the nature of Java synchronization, it's possible for cooks to become starved 
+while waiting for a machine. 
