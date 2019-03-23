@@ -35,4 +35,12 @@ public class ResourcesTest {
         assertTrue("Failed to remove diner from list of active diners", resources.getActiveDiners().isEmpty());
     }
 
+    @Test
+    public void testIncrementClock() {
+        Resources resources = new Resources(5, 100);
+        assertEquals("Failed to initialize global clock", 0, resources.getGlobalClock());
+        resources.incrementClock();
+        assertEquals("Failed to increment global clock", 1, resources.getGlobalClock());
+    }
+
 }
