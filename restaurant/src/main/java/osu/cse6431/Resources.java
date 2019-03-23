@@ -119,7 +119,7 @@ public class Resources {
      */
     public Diner takeOrder() {
         try {
-            return this.getActiveDiners().poll(100, TimeUnit.MILLISECONDS);
+            return this.getActiveDiners().poll(10, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -155,5 +155,22 @@ public class Resources {
     public void log(String msg) {
         String time = String.format("T-%d: %s", this.getGlobalClock(), msg);
         System.out.println(time);
+    }
+
+    /**
+     * A helper method which runs a busy loop for checking the global clock to
+     * see if the machine has finished its job based on some delta.
+     * 
+     * @param startTime the time when the machine was first in use
+     * @param delta the duration of use for that machine
+     */
+    public void machineLoop(int startTime, int delta) {
+        while (this.getGlobalClock() < startTime + delta) {
+            try {
+                Thread.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

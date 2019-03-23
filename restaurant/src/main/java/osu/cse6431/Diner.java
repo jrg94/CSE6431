@@ -161,19 +161,16 @@ public class Diner extends Thread {
      * Seats the diner when a table becomes available.
      */
     public void sit() {
-        while (this.getResources().getGlobalClock() < this.getArrivalTime()) {
-            try {
-                Thread.sleep(5);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        this.getResources().machineLoop(this.getArrivalTime(), 0);
         this.getResources().takeTable(this);
         String seated = String.format("Diner %d seated @ table %d", this.getIndex(),
                 this.getResources().getTakenTableCount());
         this.getResources().log(seated);
     }
 
+    /**
+     * Waits until the food arrives.
+     */
     public void waitForFood() {
         while (!this.hasFood()) {
             try {
@@ -184,17 +181,14 @@ public class Diner extends Thread {
         }
     }
 
+    /**
+     * Begins eating and only ends after EAT_TIME minutes.
+     */
     public void eat() {
         int startTime = this.getResources().getGlobalClock();
         String output = String.format("Diner %d begins eating", this.getIndex());
         this.getResources().log(output);
-        while (this.getResources().getGlobalClock() < startTime + 30) {
-            try {
-                Thread.sleep(5);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        this.getResources().machineLoop(startTime, Restaurant.EAT_TIME);
         this.getResources().freeTable();
         String msg = String.format("Diner %d leaves diner", this.getIndex());
         this.getResources().log(msg);

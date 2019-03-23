@@ -14,6 +14,7 @@ public class Restaurant {
     public static final int BURGER_COOK_TIME = 5; // minutes
     public static final int FRY_COOK_TIME = 3; // minutes
     public static final int SODA_FILL_TIME = 1; // minutes
+    public static final int EAT_TIME = 30;
 
     private ArrayList<Diner> diners;
     private ArrayList<Cook> cooks;
