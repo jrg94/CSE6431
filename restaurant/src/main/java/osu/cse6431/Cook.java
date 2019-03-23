@@ -45,13 +45,7 @@ public class Cook extends Thread {
         String output = String.format("Cooking burger %d of %d for diner %d", index, order.getBurgerOrderCount(),
                 order.getIndex());
         this.getResources().log(output);
-        while (this.getResources().getGlobalClock() < startTime + Restaurant.BURGER_COOK_TIME) {
-            try {
-                Thread.sleep(5);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        this.machineLoop(startTime, Restaurant.BURGER_COOK_TIME);
     }
 
     /**
@@ -62,13 +56,7 @@ public class Cook extends Thread {
         String output = String.format("Cooking fries %d of %d for diner %d", index, order.getFryOrderCount(),
                 order.getIndex());
         this.getResources().log(output);
-        while (this.getResources().getGlobalClock() < startTime + Restaurant.FRY_COOK_TIME) {
-            try {
-                Thread.sleep(5);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        this.machineLoop(startTime, Restaurant.FRY_COOK_TIME);
     }
 
     /**
