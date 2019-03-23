@@ -5,9 +5,6 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 public class Resources {
 
-    private boolean isGrillAvailable;
-    private boolean isFryerAvailable;
-    private boolean isSodaMachineAvailable;
     private BlockingQueue<Diner> activeDiners;
     private int totalDinerCount;
     private int servedDinerCount;
@@ -25,9 +22,6 @@ public class Resources {
         this.setTakenTableCount(0);
         this.setTotalDinerCount(totalDinerCount);
         this.setServedDinerCount(0);
-        this.setGrillAvailable(true);
-        this.setFryerAvailable(true);
-        this.setSodaMachineAvailable(true);
         this.setActiveDiners(new LinkedBlockingDeque<Diner>(this.getTotalTableCount()));
     }
 
@@ -57,48 +51,6 @@ public class Resources {
      */
     public void setTakenTableCount(int takenTableCount) {
         this.takenTableCount = takenTableCount;
-    }
-
-    /**
-     * @return the isGrillAvailable
-     */
-    public boolean isGrillAvailable() {
-        return isGrillAvailable;
-    }
-
-    /**
-     * @param isGrillAvailable the isGrillAvailable to set
-     */
-    private void setGrillAvailable(boolean isGrillAvailable) {
-        this.isGrillAvailable = isGrillAvailable;
-    }
-
-    /**
-     * @return the isFryerAvailable
-     */
-    public boolean isFryerAvailable() {
-        return isFryerAvailable;
-    }
-
-    /**
-     * @param isFryerAvailable the isFryerAvailable to set
-     */
-    private void setFryerAvailable(boolean isFryerAvailable) {
-        this.isFryerAvailable = isFryerAvailable;
-    }
-
-    /**
-     * @return the isSodaMachineAvailable
-     */
-    public boolean isSodaMachineAvailable() {
-        return isSodaMachineAvailable;
-    }
-
-    /**
-     * @param isSodaMachineAvailable the isSodaMachineAvailable to set
-     */
-    private void setSodaMachineAvailable(boolean isSodaMachineAvailable) {
-        this.isSodaMachineAvailable = isSodaMachineAvailable;
     }
 
     /**

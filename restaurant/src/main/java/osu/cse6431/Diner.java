@@ -132,6 +132,9 @@ public class Diner extends Thread {
         System.out.println("Diner seated");
     }
 
+    /**
+     * Makes a call to the sit code.
+     */
     @Override
     public void run() {
         sit();
