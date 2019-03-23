@@ -40,15 +40,17 @@ public class Cook extends Thread {
     /**
      * Cooks a burger when the grill becomes available.
      */
-    public synchronized void cookBurger() {
-        System.out.println("Cooking burger");
+    public synchronized void cookBurger(Diner order, int index) {
+        String output = String.format("Cooking burger %d of %d for Diner %d", order.getIndex(),
+                order.getBurgerOrderCount(), order.getIndex());
+        System.out.println(output);
     }
 
     /**
      * Cooks fries when the fryer becomes available.
      */
     public synchronized void cookFries(Diner order) {
-        String output = String.format("Cooking fries for Diner #%d", order.getIndex());
+        String output = String.format("Cooking fries for Diner %d", order.getIndex());
         System.out.println(output);
     }
 
@@ -73,7 +75,7 @@ public class Cook extends Thread {
      */
     public void completeOrder(Diner order) {
         for (int i = 0; i < order.getBurgerOrderCount(); i++) {
-            cookBurger();
+            cookBurger(order, i);
         }
 
         for (int i = 0; i < order.getFryOrderCount(); i++) {

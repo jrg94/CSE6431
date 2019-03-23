@@ -146,7 +146,7 @@ public class Diner extends Thread {
      */
     public synchronized void sit() {
         this.getResources().takeTable(this);
-        String seated = String.format("Diner #%d seated", this.getIndex());
+        String seated = String.format("Diner %d seated", this.getIndex());
         System.out.println(seated);
     }
 
