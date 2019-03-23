@@ -181,4 +181,13 @@ public class Resources {
             }
         }
     }
+
+    /**
+     * A helper method for detecting if there are more diners to cook for.
+     * 
+     * @return true if there are more diners
+     */
+    public synchronized boolean hasMoreDiners() {
+        return this.getServedDinerCount() != this.getTotalDinerCount();
+    }
 }

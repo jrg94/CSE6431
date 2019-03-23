@@ -117,7 +117,7 @@ public class Restaurant {
     private static ArrayList<Cook> loadCooks(int numberOfCooks) {
         ArrayList<Cook> cooks = new ArrayList<Cook>();
         for (int i = 0; i < numberOfCooks; i++) {
-            cooks.add(new Cook());
+            cooks.add(new Cook(i));
         }
         return cooks;
     }
@@ -158,7 +158,7 @@ public class Restaurant {
             diner.with(resources).start();
         }
 
-        for (int i = 0; i < 500; i++) {
+        while (resources.hasMoreDiners()) {
             Thread.sleep(10);
             resources.incrementClock();
         }

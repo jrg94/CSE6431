@@ -192,6 +192,9 @@ public class Diner extends Thread {
         this.getResources().freeTable();
         String msg = String.format("Diner %d leaves diner", this.getIndex());
         this.getResources().log(msg);
+        if (!this.getResources().hasMoreDiners()) {
+            this.getResources().log("The last diner left");
+        }
     }
 
     /**

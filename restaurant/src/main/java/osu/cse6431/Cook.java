@@ -8,6 +8,16 @@ package osu.cse6431;
 public class Cook extends Thread {
 
     private Resources resources;
+    private int index;
+
+    /**
+     * A cook constructor.
+     * 
+     * @param index the id of the cook
+     */
+    public Cook(int index) {
+        this.setIndex(index);
+    }
 
     /**
      * @return the shared resources
@@ -35,6 +45,20 @@ public class Cook extends Thread {
     public Diner getOrder() {
         Diner activeDiner = this.getResources().takeOrder();
         return activeDiner;
+    }
+
+    /**
+     * @return the index
+     */
+    public int getIndex() {
+        return index;
+    }
+
+    /**
+     * @param index the index to set
+     */
+    private void setIndex(int index) {
+        this.index = index;
     }
 
     /**
@@ -82,6 +106,9 @@ public class Cook extends Thread {
      * @param order a diner with an order
      */
     public void completeOrder(Diner order) {
+        String msg = String.format("Cook %d receives order from diner %d", this.getIndex(), order.getIndex());
+        this.getResources().log(msg);
+
         for (int i = 0; i < order.getBurgerOrderCount(); i++) {
             cookBurger(order, i + 1);
         }
@@ -98,20 +125,11 @@ public class Cook extends Thread {
     }
 
     /**
-     * A helper method for detecting if there are more diners to cook for.
-     * 
-     * @return true if there are more diners
-     */
-    public synchronized boolean hasMoreDiners() {
-        return this.getResources().getServedDinerCount() != this.getResources().getTotalDinerCount();
-    }
-
-    /**
      * Runs the thread.
      */
     @Override
     public void run() {
-        while (hasMoreDiners()) {
+        while (this.getResources().hasMoreDiners()) {
             Diner order = getOrder();
             if (order != null) {
                 completeOrder(order);
