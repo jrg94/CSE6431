@@ -89,8 +89,8 @@ public class Cook extends Thread {
     /**
      * Serves the order which frees up a table.
      */
-    public synchronized void serveOrder() {
-        this.getResources().freeTable();
+    public synchronized void serveOrder(Diner order) {
+        order.setHasFood(true);
     }
 
     /**
@@ -111,7 +111,7 @@ public class Cook extends Thread {
             pourSoda(order);
         }
 
-        serveOrder();
+        serveOrder(order);
     }
 
     /**

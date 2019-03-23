@@ -14,6 +14,7 @@ public class Diner extends Thread {
     private int drinkOrderCount; // 0 or 1
     private int index;
     private Resources resources;
+    private boolean hasFood;
 
     /**
      * Initializes a diner instance given four parameters.
@@ -29,6 +30,7 @@ public class Diner extends Thread {
         this.setFryOrderCount(fryOrderCount);
         this.setDrinkOrderCount(drinkOrderCount);
         this.setIndex(index);
+        this.setHasFood(false);
     }
 
     /**
@@ -115,6 +117,20 @@ public class Diner extends Thread {
     }
 
     /**
+     * @return the hasFood
+     */
+    public boolean hasFood() {
+        return hasFood;
+    }
+
+    /**
+     * @param hasFood the hasFood to set
+     */
+    public void setHasFood(boolean hasFood) {
+        this.hasFood = hasFood;
+    }
+
+    /**
      * @return the resources
      */
     public Resources getResources() {
@@ -144,7 +160,7 @@ public class Diner extends Thread {
     /**
      * Seats the diner when a table becomes available.
      */
-    public synchronized void sit() {
+    public void sit() {
         while (this.getResources().getGlobalClock() < this.getArrivalTime()) {
             try {
                 Thread.sleep(5);
@@ -158,12 +174,40 @@ public class Diner extends Thread {
         this.getResources().log(seated);
     }
 
+    public void waitForFood() {
+        while (!this.hasFood()) {
+            try {
+                Thread.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void eat() {
+        int startTime = this.getResources().getGlobalClock();
+        String output = String.format("Diner %d begins eating", this.getIndex());
+        this.getResources().log(output);
+        while (this.getResources().getGlobalClock() < startTime + 30) {
+            try {
+                Thread.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        this.getResources().freeTable();
+        String msg = String.format("Diner %d leaves diner", this.getIndex());
+        this.getResources().log(msg);
+    }
+
     /**
      * Makes a call to the sit code.
      */
     @Override
     public void run() {
         sit();
+        waitForFood();
+        eat();
     }
 
 }
