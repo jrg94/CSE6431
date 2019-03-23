@@ -128,16 +128,8 @@ public class Diner extends Thread {
      * Seats the diner when a table becomes available.
      */
     public synchronized void sit() {
-        while (this.getResources().getTakenTableCount() == this.getResources().getTotalTableCount()) {
-            try {
-                this.wait();
-            } catch (InterruptedException e) {
-                System.err.println("Thread interrupted");
-            }
-        }
-        System.out.println("Diner seated");
         this.getResources().takeTable(this);
-        this.notifyAll();
+        System.out.println("Diner seated");
     }
 
     @Override
