@@ -75,9 +75,27 @@ public class Cook extends Thread {
      * Pours soda when the soda machine becomes available.
      */
     public synchronized void pourSoda(Diner order) {
-        String output = String.format("T-%d: Pouring soda for diner %d", this.getResources().getGlobalClock(),
-                order.getIndex());
-        System.out.println(output);
+        int startTime = this.getResources().getGlobalClock();
+        String output = String.format("Pouring soda for diner %d", order.getIndex());
+        this.getResources().log(output);
+        this.machineLoop(startTime, Restaurant.SODA_FILL_TIME);
+    }
+
+    /**
+     * A helper method which runs a busy loop for checking the global clock to
+     * see if the machine has finished its job based on some delta.
+     * 
+     * @param startTime the time when the machine was first in use
+     * @param delta the duration of use for that machine
+     */
+    private void machineLoop(int startTime, int delta) {
+        while (this.getResources().getGlobalClock() < startTime + delta) {
+            try {
+                Thread.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
