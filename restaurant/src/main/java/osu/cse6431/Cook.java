@@ -32,7 +32,7 @@ public class Cook extends Thread {
      * 
      * @return the diner whose order we're taking
      */
-    public synchronized Diner getOrder() {
+    public Diner getOrder() {
         Diner activeDiner = this.getResources().takeOrder();
         return activeDiner;
     }
@@ -72,7 +72,7 @@ public class Cook extends Thread {
     /**
      * Serves the order which frees up a table.
      */
-    public synchronized void serveOrder(Diner order) {
+    public void serveOrder(Diner order) {
         order.setHasFood(true);
     }
 

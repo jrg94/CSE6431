@@ -8,10 +8,10 @@ public class Resources {
 
     private BlockingQueue<Diner> activeDiners;
     private int totalDinerCount;
-    private int servedDinerCount;
+    private volatile int servedDinerCount;
     private int totalTableCount;
-    private int takenTableCount;
-    private int globalClock;
+    private volatile int takenTableCount;
+    private volatile int globalClock;
 
     /**
      * The resources constructor.
@@ -148,10 +148,18 @@ public class Resources {
         }
     }
 
+    /**
+     * A helper method for incrementing the global clock.
+     */
     public void incrementClock() {
         this.setGlobalClock(this.getGlobalClock() + 1);
     }
 
+    /**
+     * A helper method which allows for logging of messages with a time stamp.
+     * 
+     * @param msg a message
+     */
     public void log(String msg) {
         String time = String.format("T-%d: %s", this.getGlobalClock(), msg);
         System.out.println(time);

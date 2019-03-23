@@ -163,7 +163,7 @@ public class Diner extends Thread {
     public void sit() {
         this.getResources().machineLoop(this.getArrivalTime(), 0);
         this.getResources().takeTable(this);
-        String seated = String.format("Diner %d seated @ table %d", this.getIndex(),
+        String seated = String.format("Diner %d is seated @ table %d", this.getIndex(),
                 this.getResources().getTakenTableCount());
         this.getResources().log(seated);
     }
