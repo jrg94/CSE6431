@@ -47,8 +47,9 @@ public class Cook extends Thread {
     /**
      * Cooks fries when the fryer becomes available.
      */
-    public synchronized void cookFries() {
-        System.out.println("Cooking fries");
+    public synchronized void cookFries(Diner order) {
+        String output = String.format("Cooking fries for Diner #%d", order.getIndex());
+        System.out.println(output);
     }
 
     /**
@@ -76,7 +77,7 @@ public class Cook extends Thread {
         }
 
         for (int i = 0; i < order.getFryOrderCount(); i++) {
-            cookFries();
+            cookFries(order);
         }
 
         for (int i = 0; i < order.getDrinkOrderCount(); i++) {

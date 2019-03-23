@@ -12,6 +12,7 @@ public class Diner extends Thread {
     private int burgerOrderCount; // > 1
     private int fryOrderCount; // > 0
     private int drinkOrderCount; // 0 or 1
+    private int index;
     private Resources resources;
 
     /**
@@ -22,11 +23,12 @@ public class Diner extends Thread {
      * @param fryOrderCount the number of fries the diner orders
      * @param drinkOrderCount the number of drinks the diner orders
      */
-    public Diner(int arrivalTime, int burgerOrderCount, int fryOrderCount, int drinkOrderCount) {
+    public Diner(int arrivalTime, int burgerOrderCount, int fryOrderCount, int drinkOrderCount, int index) {
         this.setArrivalTime(arrivalTime);
         this.setBurgerOrderCount(burgerOrderCount);
         this.setFryOrderCount(fryOrderCount);
         this.setDrinkOrderCount(drinkOrderCount);
+        this.setIndex(index);
     }
 
     /**
@@ -34,11 +36,12 @@ public class Diner extends Thread {
      *
      * @param diner a list of parameters
      */
-    public Diner(int[] diner) {
+    public Diner(int[] diner, int index) {
         this.setArrivalTime(diner[0]);
         this.setBurgerOrderCount(diner[1]);
         this.setFryOrderCount(diner[2]);
         this.setDrinkOrderCount(diner[3]);
+        this.setIndex(index);
     }
 
     /**
@@ -98,6 +101,20 @@ public class Diner extends Thread {
     }
 
     /**
+     * @return the index
+     */
+    public int getIndex() {
+        return index;
+    }
+
+    /**
+     * @param index the index to set
+     */
+    private void setIndex(int index) {
+        this.index = index;
+    }
+
+    /**
      * @return the resources
      */
     public Resources getResources() {
@@ -129,7 +146,8 @@ public class Diner extends Thread {
      */
     public synchronized void sit() {
         this.getResources().takeTable(this);
-        System.out.println("Diner seated");
+        String seated = String.format("Diner #%d seated", this.getIndex());
+        System.out.println(seated);
     }
 
     /**
