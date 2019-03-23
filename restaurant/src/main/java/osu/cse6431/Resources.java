@@ -11,6 +11,7 @@ public class Resources {
     private int servedDinerCount;
     private int totalTableCount;
     private int takenTableCount;
+    private int globalClock;
 
     /**
      * The resources constructor.
@@ -24,6 +25,7 @@ public class Resources {
         this.setTotalDinerCount(totalDinerCount);
         this.setServedDinerCount(0);
         this.setActiveDiners(new LinkedBlockingDeque<Diner>(this.getTotalTableCount()));
+        this.setGlobalClock(0);
     }
 
     /**
@@ -97,6 +99,20 @@ public class Resources {
     }
 
     /**
+     * @return the globalClock
+     */
+    public int getGlobalClock() {
+        return globalClock;
+    }
+
+    /**
+     * @param globalClock the globalClock to set
+     */
+    private void setGlobalClock(int globalClock) {
+        this.globalClock = globalClock;
+    }
+
+    /**
      * Takes the latest diner off the active diner list.
      * 
      * @return the latest diner
@@ -130,5 +146,9 @@ public class Resources {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public void incrementClock() {
+        this.setGlobalClock(this.getGlobalClock() + 1);
     }
 }

@@ -156,6 +156,11 @@ public class Restaurant {
         for (Diner diner : toRun.getDiners()) {
             diner.with(resources).start();
         }
+
+        for (int i = 0; i < 500; i++) {
+            Thread.sleep(10);
+            resources.incrementClock();
+        }
     }
 
 }

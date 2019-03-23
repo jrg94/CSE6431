@@ -41,8 +41,8 @@ public class Cook extends Thread {
      * Cooks a burger when the grill becomes available.
      */
     public synchronized void cookBurger(Diner order, int index) {
-        String output = String.format("Cooking burger %d of %d for Diner %d", index, order.getBurgerOrderCount(),
-                order.getIndex());
+        String output = String.format("T-%d: Cooking burger %d of %d for diner %d",
+                this.getResources().getGlobalClock(), index, order.getBurgerOrderCount(), order.getIndex());
         System.out.println(output);
     }
 
@@ -50,8 +50,8 @@ public class Cook extends Thread {
      * Cooks fries when the fryer becomes available.
      */
     public synchronized void cookFries(Diner order, int index) {
-        String output = String.format("Cooking fries %d of %d for Diner %d", index, order.getFryOrderCount(),
-                order.getIndex());
+        String output = String.format("T-%d: Cooking fries %d of %d for diner %d", this.getResources().getGlobalClock(),
+                index, order.getFryOrderCount(), order.getIndex());
         System.out.println(output);
     }
 
@@ -59,7 +59,8 @@ public class Cook extends Thread {
      * Pours soda when the soda machine becomes available.
      */
     public synchronized void pourSoda(Diner order) {
-        String output = String.format("Pouring soda for Diner %d", order.getIndex());
+        String output = String.format("T-%d: Pouring soda for diner %d", this.getResources().getGlobalClock(),
+                order.getIndex());
         System.out.println(output);
     }
 
