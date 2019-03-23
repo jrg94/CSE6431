@@ -1,5 +1,27 @@
 # Restaurant Project
 
+## Input
+
+Input is expected as an input stream on stdin. Input is expected
+to be in the following format:
+
+```
+# of diners (n)
+# of tables
+# of cooks
+n lines of diners and their orders
+```
+
+Each diner line should be in the following format:
+
+```
+time burgerCount fryCount sodaCount
+```
+
+In other words, the program expects each item to be
+separated by a single space. The program cannot handle
+malformed input.
+
 ## Output
 
 All output from the restaurant program is sent to stdout.
