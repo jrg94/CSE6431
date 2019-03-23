@@ -2,6 +2,7 @@ package osu.cse6431;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.TimeUnit;
 
 public class Resources {
 
@@ -102,7 +103,7 @@ public class Resources {
      */
     public Diner takeOrder() {
         try {
-            return this.getActiveDiners().take();
+            return this.getActiveDiners().poll(100, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

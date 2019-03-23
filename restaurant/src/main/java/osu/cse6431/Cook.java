@@ -102,7 +102,9 @@ public class Cook extends Thread {
     public void run() {
         while (hasMoreDiners()) {
             Diner order = getOrder();
-            completeOrder(order);
+            if (order != null) {
+                completeOrder(order);
+            }
         }
     }
 }
