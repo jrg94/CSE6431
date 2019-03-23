@@ -151,4 +151,9 @@ public class Resources {
     public void incrementClock() {
         this.setGlobalClock(this.getGlobalClock() + 1);
     }
+
+    public void log(String msg) {
+        String time = String.format("T-%d: %s", this.getGlobalClock(), msg);
+        System.out.println(time);
+    }
 }

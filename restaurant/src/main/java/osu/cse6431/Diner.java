@@ -149,14 +149,13 @@ public class Diner extends Thread {
             try {
                 Thread.sleep(5);
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
         this.getResources().takeTable(this);
-        String seated = String.format("T-%d: Diner %d seated @ table %d", this.getResources().getGlobalClock(),
-                this.getIndex(), this.getResources().getTakenTableCount());
-        System.out.println(seated);
+        String seated = String.format("Diner %d seated @ table %d", this.getIndex(),
+                this.getResources().getTakenTableCount());
+        this.getResources().log(seated);
     }
 
     /**

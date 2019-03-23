@@ -42,9 +42,9 @@ public class Cook extends Thread {
      */
     public synchronized void cookBurger(Diner order, int index) {
         int startTime = this.getResources().getGlobalClock();
-        String output = String.format("T-%d: Cooking burger %d of %d for diner %d", startTime, index,
-                order.getBurgerOrderCount(), order.getIndex());
-        System.out.println(output);
+        String output = String.format("Cooking burger %d of %d for diner %d", index, order.getBurgerOrderCount(),
+                order.getIndex());
+        this.getResources().log(output);
         while (this.getResources().getGlobalClock() < startTime + Restaurant.BURGER_COOK_TIME) {
             try {
                 Thread.sleep(5);
@@ -58,9 +58,17 @@ public class Cook extends Thread {
      * Cooks fries when the fryer becomes available.
      */
     public synchronized void cookFries(Diner order, int index) {
-        String output = String.format("T-%d: Cooking fries %d of %d for diner %d", this.getResources().getGlobalClock(),
-                index, order.getFryOrderCount(), order.getIndex());
-        System.out.println(output);
+        int startTime = this.getResources().getGlobalClock();
+        String output = String.format("Cooking fries %d of %d for diner %d", index, order.getFryOrderCount(),
+                order.getIndex());
+        this.getResources().log(output);
+        while (this.getResources().getGlobalClock() < startTime + Restaurant.FRY_COOK_TIME) {
+            try {
+                Thread.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
