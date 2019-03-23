@@ -91,6 +91,11 @@ the fryer as well as the soda machine, in that order. After completing the
 order, the cook indicates to the diner that their food is ready before
 taking another order.
 
+Finally, the Resources class is responsible for storing shared information
+between the cooks and diners like the global clock, the total table count,
+the taken table count, the total served count, and the total number of
+diners, and a list of active diners.
+
 ## Opportunities for Improvements
 
 The biggest area for improvement is kitchen resource usage among cooks.
