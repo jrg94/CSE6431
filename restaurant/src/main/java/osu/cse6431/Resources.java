@@ -119,7 +119,7 @@ public class Resources {
      */
     public Diner takeOrder() {
         try {
-            return this.getActiveDiners().poll(10, TimeUnit.MILLISECONDS);
+            return this.getActiveDiners().poll(Restaurant.POLL_RATE, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -140,9 +140,16 @@ public class Resources {
      * @param activeDiner the diner taking the table
      */
     public void takeTable(Diner activeDiner) {
-        this.setTakenTableCount(this.getTakenTableCount() + 1);
+        while (!this.hasMoreTables()) {
+            try {
+                Thread.sleep(Restaurant.SAMPLE_RATE);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         try {
             this.getActiveDiners().put(activeDiner);
+            this.setTakenTableCount(this.getTakenTableCount() + 1);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -175,7 +182,7 @@ public class Resources {
     public void machineLoop(int startTime, int delta) {
         while (this.getGlobalClock() < startTime + delta) {
             try {
-                Thread.sleep(5);
+                Thread.sleep(Restaurant.SAMPLE_RATE);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -189,5 +196,9 @@ public class Resources {
      */
     public synchronized boolean hasMoreDiners() {
         return this.getServedDinerCount() != this.getTotalDinerCount();
+    }
+
+    public synchronized boolean hasMoreTables() {
+        return this.getTakenTableCount() != this.getTotalTableCount();
     }
 }

@@ -174,7 +174,7 @@ public class Diner extends Thread {
     public void waitForFood() {
         while (!this.hasFood()) {
             try {
-                Thread.sleep(5);
+                Thread.sleep(Restaurant.SAMPLE_RATE);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

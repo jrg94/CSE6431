@@ -18,7 +18,7 @@ public class RestaurantTest {
 
     @Test
     public void testLoad() throws IOException {
-        Scanner input = new Scanner(getFile("test_001.txt"));
+        Scanner input = new Scanner(getFile("3_diners_5_tables_1_cook.txt"));
         Restaurant test = Restaurant.load(input);
         assertEquals("Failed to load number of diners", 3, test.getDiners().size());
         assertEquals("Failed to load number of tables", 5, test.getNumberOfTables());

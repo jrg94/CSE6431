@@ -1,6 +1,7 @@
 package osu.cse6431;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -35,4 +36,25 @@ public class ResourcesTest {
         assertTrue("Failed to remove diner from list of active diners", resources.getActiveDiners().isEmpty());
     }
 
+    @Test
+    public void testIncrementClock() {
+        Resources resources = new Resources(5, 100);
+        assertEquals("Failed to initialize global clock", 0, resources.getGlobalClock());
+        resources.incrementClock();
+        assertEquals("Failed to increment global clock", 1, resources.getGlobalClock());
+    }
+
+    @Test
+    public void testMachineLoop() {
+        Resources resources = new Resources(5, 100);
+        resources.machineLoop(0, 0);
+    }
+
+    @Test
+    public void testHasMoreDiners() {
+        Resources resources = new Resources(5, 1);
+        assertTrue("Failed to detect more diners", resources.hasMoreDiners());
+        resources.freeTable();
+        assertFalse("Failed to detect no more diners", resources.hasMoreDiners());
+    }
 }
