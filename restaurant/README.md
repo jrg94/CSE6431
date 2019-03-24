@@ -5,12 +5,32 @@ sections below.
 
 ## Execution
 
+To run the solution, you'll have to compile and execute it using Java. 
+I recommend the following set of commands:
+
+```shell
+javac src/main/java/osu/cse6431/*.java
+java -cp src/main/java osu.cse6431.Restaurant
+```
+
+The first command will compile the Java files while the second command
+will run them. Be sure to provide some file on stdin before running
+the second command.
+
+For convenience, I've provided a run script which you can use as follows:
+
+```shell
+./run.sh < src/test/resources/test_001.txt
+```
+
+Feel free to replace the redirection with the path to your test file.
+
 ## Input
 
 Input is expected as an input stream on stdin. Input is expected
 to be in the following format:
 
-```
+```text
 # of diners (n)
 # of tables
 # of cooks
@@ -19,7 +39,7 @@ n lines of diners and their orders
 
 Each diner line should be in the following format:
 
-```
+```text
 time burgerCount fryCount sodaCount
 ```
 
@@ -32,7 +52,7 @@ malformed input. Also, all values are expected as integers.
 All output from the restaurant program is sent to stdout.
 The following snippet is a sample log of the simulation:
 
-```
+```text
 T-0: Diner 0 is seated @ table 1
 T-0: Cook 0 receives order from diner 0
 T-0: Cooking burger 1 of 2 for diner 0
