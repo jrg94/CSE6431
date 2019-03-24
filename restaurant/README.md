@@ -24,6 +24,15 @@ For convenience, I've provided a run script which you can use as follows:
 ```
 
 Feel free to replace the redirection with the path to your test file.
+Also, if you run into line ending issues with the run.sh file, feel
+free to leverage the following command:
+
+```shell
+sed -i -e 's/\r$//' run.sh
+```
+
+I developed the script on Windows, so this will replace all Windows
+line endings with Unix line endings.
 
 ## Input
 
