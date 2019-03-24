@@ -140,9 +140,16 @@ public class Resources {
      * @param activeDiner the diner taking the table
      */
     public void takeTable(Diner activeDiner) {
-        this.setTakenTableCount(this.getTakenTableCount() + 1);
+        while (!this.hasMoreTables()) {
+            try {
+                Thread.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         try {
             this.getActiveDiners().put(activeDiner);
+            this.setTakenTableCount(this.getTakenTableCount() + 1);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -189,5 +196,9 @@ public class Resources {
      */
     public synchronized boolean hasMoreDiners() {
         return this.getServedDinerCount() != this.getTotalDinerCount();
+    }
+
+    public synchronized boolean hasMoreTables() {
+        return this.getTakenTableCount() != this.getTotalTableCount();
     }
 }
