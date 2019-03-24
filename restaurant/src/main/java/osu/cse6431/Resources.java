@@ -119,7 +119,7 @@ public class Resources {
      */
     public Diner takeOrder() {
         try {
-            return this.getActiveDiners().poll(10, TimeUnit.MILLISECONDS);
+            return this.getActiveDiners().poll(Restaurant.POLL_RATE, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -142,7 +142,7 @@ public class Resources {
     public void takeTable(Diner activeDiner) {
         while (!this.hasMoreTables()) {
             try {
-                Thread.sleep(5);
+                Thread.sleep(Restaurant.SAMPLE_RATE);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -182,7 +182,7 @@ public class Resources {
     public void machineLoop(int startTime, int delta) {
         while (this.getGlobalClock() < startTime + delta) {
             try {
-                Thread.sleep(5);
+                Thread.sleep(Restaurant.SAMPLE_RATE);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
